@@ -3,7 +3,12 @@ import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Comparator;
 import org.ejml.simple.SimpleMatrix;
-
+import org.ojalgo.optimisation.integer.IntegerSolver;
+import org.ojalgo.optimisation.ExpressionsBasedModel;
+import org.ojalgo.optimisation.Variable;
+import org.ojalgo.optimisation.Expression;
+import org.ojalgo.optimisation.Optimisation;
+import java.math.BigDecimal;
 
 /**
  *
@@ -13,6 +18,9 @@ public class Promethee {
     
     public LinkedList<Criterium> criteria;
     public LinkedList<Alternative> alternatives;
+    public LinkedList<Constraint> constraints;
+    public LinkedList<Alternative> alternativesBestSet;
+    public double bestSetMPF;
     
     private int criteriaNum_; 
     private int alternativesNum_;
@@ -24,6 +32,8 @@ public class Promethee {
 		criteriaNum_ = criteriaNum;
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
+                constraints = new LinkedList<Constraint>();
+                alternativesBestSet = new LinkedList<Alternative>();
     }
     
     public void addCriterium(Criterium criterium)   {
@@ -34,12 +44,14 @@ public class Promethee {
             throw new IndexOutOfBoundsException("All the criteria has been already added.");
         }
     }
-     
+    
+    
     public void addAlternative(Alternative alternative)   {
         alternativesNum_++;
         alternative.id = alternativesNum_;
         alternatives.add(alternative);
     }
+    
     
     public void calculatePromethee1 ()  {
         double sumWeight = 0;
@@ -66,7 +78,7 @@ public class Promethee {
      });
     }
     
-    public void calculatePromethee2 ()  {
+    public void calculatePromethee2()  {
         calculateMPD();
         calculateMPF();
         Collections.sort(alternatives, new Comparator<Alternative>() {
@@ -81,6 +93,56 @@ public class Promethee {
              return 0;
          }
      });
+    }
+    
+    public void addConstraint(Constraint constraint)  {
+        if(criteria.indexOf(constraint.criterium)!=-1)  {
+            constraints.add(constraint);
+        }
+    }
+    
+    public void calculatePromethee5()   {
+        LinkedList<Variable> listOfVariables = new LinkedList<Variable>();
+        for(int i=0; i<alternativesNum_;i++)    {
+            listOfVariables.add(Variable.makeBinary("x" + i));
+        }
+        
+        ExpressionsBasedModel model = new ExpressionsBasedModel();
+        model.addVariables(listOfVariables);
+        
+        for(int i=0; i<constraints.size(); i++) {
+            Expression ex = model.addExpression("exp" + i);
+            Constraint constraint = constraints.get(i);
+            int criteriumIndex = criteria.indexOf(constraint.criterium);
+            
+            for(int j=0; j<alternativesNum_; j++)    {
+                ex.setLinearFactor(listOfVariables.get(j), alternatives.get(j).criteriaValues.get(criteriumIndex));
+            }
+            
+            if(constraint.constraintType == Constraint.ConstrainType.UPPER)  {
+                ex.upper(BigDecimal.valueOf(constraint.value));
+            }
+            else if(constraint.constraintType == Constraint.ConstrainType.LOWER)  {
+                ex.lower(BigDecimal.valueOf(constraint.value));
+            }
+        }
+        
+        Expression ex = model.addExpression("obj");
+        for(int i=0; i<alternativesNum_; i++)    {
+                ex.setLinearFactor(listOfVariables.get(i), alternatives.get(i).mpf);
+        }
+        ex.weight(BigDecimal.ONE);
+        model.setMaximisation(true);
+        IntegerSolver solver = IntegerSolver.make(model);
+        Optimisation.Result res = solver.solve();
+        
+        bestSetMPF = res.getValue();
+        
+        for(int i=0; i<alternativesNum_; i++)   {
+            if(res.get(i).compareTo(BigDecimal.ONE) == 0)   {
+                alternativesBestSet.add(alternatives.get(i));
+            }
+        }
     }
     
     private void calculateMPD()  {
