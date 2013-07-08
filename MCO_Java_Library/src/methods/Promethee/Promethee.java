@@ -145,6 +145,25 @@ public class Promethee {
         }
     }
     
+    public int getP1Preference(Alternative a, Alternative b)   {
+        if((a.mpf_plus>b.mpf_plus) && (a.mpf_minus<=b.mpf_minus)) {
+            return 1;         
+        }
+        else if((a.mpf_plus==b.mpf_minus) && (a.mpf_minus<b.mpf_minus)) {
+            return 1;
+        }
+        else if((a.mpf_plus==b.mpf_plus) && (a.mpf_minus == b.mpf_minus))   {
+            return 0;
+        }
+        else if((a.mpf_plus>b.mpf_plus) && (a.mpf_minus>b.mpf_minus))   {
+            return -1;
+        }
+        else if ((a.mpf_plus<b.mpf_plus) && (a.mpf_minus<b.mpf_minus)) {
+            return -1;           
+        }
+        return 0;
+    }
+    
     private void calculateMPD()  {
         mpd = new SimpleMatrix(alternativesNum_,alternativesNum_);
         mpd.zero();
