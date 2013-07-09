@@ -3,8 +3,8 @@
  * and open the template in the editor.
  */
 package mco_java_library_tests;
-import methods.Promethee.Alternative;
-import methods.Promethee.Criterium;
+import methods.Alternative;
+import methods.Criterium;
 import methods.Promethee.Promethee;
 
 

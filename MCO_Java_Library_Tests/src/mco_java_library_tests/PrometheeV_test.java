@@ -4,10 +4,10 @@
  */
 package mco_java_library_tests;
 import methods.Promethee.Promethee;
-import methods.Promethee.Constraint;
+import methods.Constraint;
 import java.math.BigDecimal;
-import methods.Promethee.Alternative;
-import methods.Promethee.Criterium;
+import methods.Alternative;
+import methods.Criterium;
 import org.ojalgo.optimisation.integer.IntegerSolver;
 import org.ojalgo.optimisation.ExpressionsBasedModel;
 import org.ojalgo.optimisation.Variable;

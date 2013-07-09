@@ -1,5 +1,5 @@
 
-package methods.Promethee;
+package methods;
 
 /**
  *
@@ -17,6 +17,7 @@ public class Criterium {
         
         public double q; //indifference threshold
         public double p; //absolute preference threshold
+        public double threshold; //some threshold used in Electee
 	
 	public Criterium() {
 		name="";
@@ -24,5 +25,6 @@ public class Criterium {
 		weight = 0;
                 q = 0;
                 p = 0;
+                threshold=0;
 	}
 }

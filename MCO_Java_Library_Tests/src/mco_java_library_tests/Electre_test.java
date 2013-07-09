@@ -5,8 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import methods.Electre.Criterium;
-import methods.Electre.Criterium.Direction;
+import methods.Criterium;
 import methods.Electre.Data;
 import methods.Electre.Electre1;
 import methods.Electre.Electre4;

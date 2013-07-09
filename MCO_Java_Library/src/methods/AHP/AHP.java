@@ -7,23 +7,23 @@ package methods.AHP;
 import java.util.LinkedList;
 import org.ejml.simple.SimpleMatrix;
 import org.ejml.simple.SimpleEVD;
-
+import methods.Criterium;
+import methods.Alternative;
 
 /**
  *
  * @author Gabriela Pastuszka, Mateusz Krasucki
  */
 public class AHP {
+        public LinkedList<Criterium> criteria;
+        public LinkedList<Alternative> alternatives;
 	
 	private LinkedList<SimpleMatrix> altsCriteriaValues_; // alternatives' criteria paiwaise comparisons values matrix
 	
 	private SimpleMatrix criteriaMatrix_; // criteria importance pairwaise comparisons matrix      
         
         private double epsilon_;
-        
-        private int criteriaNumber_;
-        private int altsNumber_;
-        
+              
         private boolean calculated_;
         
         //results:
@@ -34,10 +34,10 @@ public class AHP {
 
 	public AHP() {
 		super();
+                criteria = new LinkedList<Criterium>();
+                alternatives = new LinkedList<Alternative>();
 		altsCriteriaValues_ = new LinkedList<SimpleMatrix>();
                 epsilon_ = 0.0001;
-                criteriaNumber_= 0;
-                altsNumber_ = 0;
                 calculated_ = false;
 	}
         
@@ -83,28 +83,33 @@ public class AHP {
                 return 0.0; 
         }
         
+        public void addAlternative(Alternative alternative)   {
+            alternative.id = alternatives.size();
+            alternatives.add(alternative);
+        }
+        
+        public void addCriterium(Criterium criterium)   {
+            criteria.add(criterium);
+        }
         
         public void setCriteriaMatrix(double[][] tmpCriteriaMatrix, boolean fixMatrix) {
+         
                 SimpleMatrix criteriaMatrix = new SimpleMatrix(tmpCriteriaMatrix);
-		if (criteriaMatrix.numRows() == criteriaMatrix.numCols())   {
-                    criteriaNumber_ = criteriaMatrix.numRows();
-                    if(fixMatrix) 
+		if (this.criteria.size() == criteriaMatrix.numRows() && this.criteria.size() == criteriaMatrix.numCols())   {
+                   if(fixMatrix) 
                         criteriaMatrix_ = fixMatrix(criteriaMatrix);
                     else
                         criteriaMatrix_ = criteriaMatrix;
                 }
                 else
-                    System.out.println("Criteria pairwise comparison matrix is not square.");
+                    System.out.println("Criteria pairwise comparison matrix is not square or size is not correct");
 	}
         
         
-	public void addCriterium(double[][] tmpAltsCriteriumValues, boolean fixMatrix) {
-                SimpleMatrix altsCriteriumValues = new SimpleMatrix(tmpAltsCriteriumValues);
-		if (altsCriteriumValues.numRows() == altsCriteriumValues.numCols())   {
-                    if(altsNumber_== 0)  {
-                        altsNumber_ = altsCriteriumValues.numRows();
-                    }
-                    if(altsNumber_ == altsCriteriumValues.numRows())   {
+	public void addAltsCriteriumValues(double[][] rawAltsCriteriumValues, boolean fixMatrix) {
+                SimpleMatrix altsCriteriumValues = new SimpleMatrix(rawAltsCriteriumValues);
+		if (alternatives.size() == altsCriteriumValues.numRows() && alternatives.size() == altsCriteriumValues.numCols())   {
+                    if(alternatives.size() == altsCriteriumValues.numRows())   {
                         if(fixMatrix) 
                             altsCriteriaValues_.add(fixMatrix(altsCriteriumValues));
                         else
@@ -124,13 +129,13 @@ public class AHP {
         public void calculate() {
             criteriaWeights_ = calculateEigenVector(criteriaMatrix_);
            
-            alternativesCriteriaValues_ = new SimpleMatrix(altsNumber_,criteriaNumber_);
+            alternativesCriteriaValues_ = new SimpleMatrix(alternatives.size(), criteria.size());
             SimpleMatrix tmp;
             int colNum = 0;
             
             for(SimpleMatrix altsCriteriumValues : altsCriteriaValues_)  {
                 tmp = calculateEigenVector(altsCriteriumValues);
-                for(int r = 0; r < altsNumber_; r++)    {
+                for(int r = 0; r < alternatives.size(); r++)    {
                     alternativesCriteriaValues_.set(r, colNum, tmp.get(r, 0));
                 }
                 colNum++;

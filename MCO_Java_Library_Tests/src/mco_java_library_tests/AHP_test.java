@@ -2,7 +2,8 @@ package mco_java_library_tests;
 import methods.AHP.AHP;
 import org.ejml.simple.SimpleMatrix;
 import org.ejml.simple.SimpleEVD;
-
+import methods.Criterium;
+import methods.Alternative;
 
 /**
  *
@@ -43,10 +44,41 @@ public class AHP_test {
 	};
         
         AHP ahpTest = new AHP();
+        
+        Criterium c_style = new Criterium();
+        c_style.name = "style";
+        c_style.direction = Criterium.Direction.MAX;
+        ahpTest.addCriterium(c_style);
+        
+        Criterium c_reliability = new Criterium();
+        c_reliability.name = "reliability";
+        c_reliability.direction = Criterium.Direction.MAX;
+        ahpTest.addCriterium(c_reliability);
+        
+        Criterium c_fuelEconomy = new Criterium();
+        c_fuelEconomy.name = "fuelEconomy";
+        c_fuelEconomy.direction = Criterium.Direction.MAX;
+        ahpTest.addCriterium(c_fuelEconomy);
+        
+       
         ahpTest.setCriteriaMatrix(criteria, true);
-        ahpTest.addCriterium(style, false);
-        ahpTest.addCriterium(reliability, false); 
-        ahpTest.addCriterium(fuelEconomy, true);
+        
+        Alternative alt1 = new Alternative();
+        alt1.name = "car1";
+        ahpTest.addAlternative(alt1);
+        Alternative alt2= new Alternative();
+        alt2.name = "car2";
+        ahpTest.addAlternative(alt2);
+        Alternative alt3 = new Alternative();
+        alt3.name = "car3";
+        ahpTest.addAlternative(alt3);
+        Alternative alt4 = new Alternative();
+        alt4.name = "car4";
+        ahpTest.addAlternative(alt4);
+        
+        ahpTest.addAltsCriteriumValues(style, false);
+        ahpTest.addAltsCriteriumValues(reliability, false); 
+        ahpTest.addAltsCriteriumValues(fuelEconomy, true);
         
         ahpTest.calculate();
         
@@ -81,10 +113,10 @@ public class AHP_test {
         
         System.out.println();
         
-        System.out.println(ahpTest.getAlternativeValue(0));
-        System.out.println(ahpTest.getAlternativeValue(1));
-        System.out.println(ahpTest.getAlternativeValue(2));
-        System.out.println(ahpTest.getAlternativeValue(3));
+        System.out.println(ahpTest.alternatives.get(0).name + " " + ahpTest.getAlternativeValue(0));
+        System.out.println(ahpTest.alternatives.get(1).name + " " + ahpTest.getAlternativeValue(1));
+        System.out.println(ahpTest.alternatives.get(2).name + " " + ahpTest.getAlternativeValue(2));
+        System.out.println(ahpTest.alternatives.get(3).name + " " + ahpTest.getAlternativeValue(3));
     }
 }
 

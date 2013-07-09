@@ -1,5 +1,5 @@
 
-package methods.Promethee;
+package methods;
 
 /**
  *

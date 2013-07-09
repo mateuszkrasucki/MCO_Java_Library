@@ -1,4 +1,7 @@
 package methods.Promethee;
+import methods.Criterium;
+import methods.Alternative;
+import methods.Constraint;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Comparator;
