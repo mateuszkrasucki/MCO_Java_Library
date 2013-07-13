@@ -84,7 +84,7 @@ public class AHP {
         }
         
         public void addAlternative(Alternative alternative)   {
-            alternative.id = alternatives.size();
+            alternative.id = alternatives.size()+1;
             alternatives.add(alternative);
         }
         
