@@ -1,7 +1,4 @@
 package methods.Promethee;
-import methods.Criterium;
-import methods.Alternative;
-import methods.Constraint;
 import java.util.LinkedList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -17,26 +14,31 @@ import java.math.BigDecimal;
  *
  * @author Mateusz Krasucki
  */
-public class Promethee {
+public class Promethee5 {
     
-    public LinkedList<Criterium> criteria;
-    public LinkedList<Alternative> alternatives;
-    public LinkedList<Constraint> constraints;
-    public LinkedList<Alternative> alternativesBestSet;
-    public double bestSetMPF;
+    private LinkedList<Criterium> criteria;
+    private LinkedList<Alternative> alternatives;
+    private LinkedList<Constraint> constraints;
+    
+    private LinkedList<Alternative> ranking;
+    private LinkedList<Alternative> alternativesBestSet;
+    private double bestSetMPF;
     
     private int criteriaNum_; 
     private int alternativesNum_;
     
     private SimpleMatrix mpd;
     
-    public Promethee(int criteriaNum) {
+    public Promethee5(int criteriaNum) {
                 alternativesNum_ = 0;
 		criteriaNum_ = criteriaNum;
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
                 constraints = new LinkedList<Constraint>();
+                ranking = new LinkedList<Alternative>();
+                
                 alternativesBestSet = new LinkedList<Alternative>();
+                bestSetMPF = 0;
     }
     
     public void addCriterium(Criterium criterium)   {
@@ -51,60 +53,35 @@ public class Promethee {
     
     public void addAlternative(Alternative alternative)   {
         alternativesNum_++;
-        alternative.id = alternativesNum_;
+        alternative.setId(alternativesNum_);
         alternatives.add(alternative);
     }
-    
-    
-    public void calculatePromethee1 ()  {
-        double sumWeight = 0;
-                for(int i=0; i<criteriaNum_; i++)   {
-            sumWeight = sumWeight + criteria.get(i).weight;
-        }
-        for(int i=0; i<criteriaNum_; i++)   {
-            criteria.get(i).weight = criteria.get(i).weight/sumWeight;
-        }
-        
-        calculateMPD();     
-        calculateMPF();
-        Collections.sort(alternatives, new Comparator<Alternative>() {
-         @Override
-         public int compare(Alternative o1, Alternative o2) {
-             if(o1.mpf_plus<o2.mpf_plus)    {
-                 return 1;
-             }
-             else if(o1.mpf_plus>o2.mpf_plus)   {
-                 return -1;
-             }
-             return 0;
-         }
-     });
-    }
-    
-    public void calculatePromethee2()  {
-        calculateMPD();
-        calculateMPF();
-        Collections.sort(alternatives, new Comparator<Alternative>() {
-         @Override
-         public int compare(Alternative o1, Alternative o2) {
-             if(o1.mpf<o2.mpf)    {
-                 return 1;
-             }
-             else if(o1.mpf>o2.mpf)   {
-                 return -1;
-             }
-             return 0;
-         }
-     });
-    }
-    
+
     public void addConstraint(Constraint constraint)  {
-        if(criteria.indexOf(constraint.criterium)!=-1)  {
+        if(criteria.indexOf(constraint.getCriterium())!=-1)  {
             constraints.add(constraint);
         }
     }
     
     public void calculatePromethee5()   {
+        ranking = new LinkedList<Alternative>(alternatives);
+
+        calculateMPD();
+        calculateMPF();
+        
+        Collections.sort(ranking, new Comparator<Alternative>() {
+         @Override
+         public int compare(Alternative o1, Alternative o2) {
+             if(o1.getMpf()<o2.getMpf())    {
+                 return 1;
+             }
+             else if(o1.getMpf()>o2.getMpf())   {
+                 return -1;
+             }
+             return 0;
+         }
+         });
+        
         LinkedList<Variable> listOfVariables = new LinkedList<Variable>();
         for(int i=0; i<alternativesNum_;i++)    {
             listOfVariables.add(Variable.makeBinary("x" + i));
@@ -116,23 +93,23 @@ public class Promethee {
         for(int i=0; i<constraints.size(); i++) {
             Expression ex = model.addExpression("exp" + i);
             Constraint constraint = constraints.get(i);
-            int criteriumIndex = criteria.indexOf(constraint.criterium);
+            int criteriumIndex = criteria.indexOf(constraint.getCriterium());
             
             for(int j=0; j<alternativesNum_; j++)    {
-                ex.setLinearFactor(listOfVariables.get(j), alternatives.get(j).criteriaValues.get(criteriumIndex));
+                ex.setLinearFactor(listOfVariables.get(j), alternatives.get(j).getCriteriumValue(criteriumIndex));
             }
             
-            if(constraint.constraintType == Constraint.ConstrainType.UPPER)  {
-                ex.upper(BigDecimal.valueOf(constraint.value));
+            if(constraint.getConstraintType() == Constraint.ConstrainType.UPPER)  {
+                ex.upper(BigDecimal.valueOf(constraint.getValue()));
             }
-            else if(constraint.constraintType == Constraint.ConstrainType.LOWER)  {
-                ex.lower(BigDecimal.valueOf(constraint.value));
+            else if(constraint.getConstraintType() == Constraint.ConstrainType.LOWER)  {
+                ex.lower(BigDecimal.valueOf(constraint.getValue()));
             }
         }
         
         Expression ex = model.addExpression("obj");
         for(int i=0; i<alternativesNum_; i++)    {
-                ex.setLinearFactor(listOfVariables.get(i), alternatives.get(i).mpf);
+                ex.setLinearFactor(listOfVariables.get(i), alternatives.get(i).getMpf());
         }
         ex.weight(BigDecimal.ONE);
         model.setMaximisation(true);
@@ -148,25 +125,7 @@ public class Promethee {
         }
     }
     
-    public int getP1Preference(Alternative a, Alternative b)   {
-        if((a.mpf_plus>b.mpf_plus) && (a.mpf_minus<=b.mpf_minus)) {
-            return 1;         
-        }
-        else if((a.mpf_plus==b.mpf_minus) && (a.mpf_minus<b.mpf_minus)) {
-            return 1;
-        }
-        else if((a.mpf_plus==b.mpf_plus) && (a.mpf_minus == b.mpf_minus))   {
-            return 0;
-        }
-        else if((a.mpf_plus>b.mpf_plus) && (a.mpf_minus>b.mpf_minus))   {
-            return -1;
-        }
-        else if ((a.mpf_plus<b.mpf_plus) && (a.mpf_minus<b.mpf_minus)) {
-            return -1;           
-        }
-        return 0;
-    }
-    
+   
     private void calculateMPD()  {
         mpd = new SimpleMatrix(alternativesNum_,alternativesNum_);
         mpd.zero();
@@ -179,23 +138,23 @@ public class Promethee {
                         double d = 0;
                         double pd = 0;
                         // wyznaczenie roznicy miedzy wartosciami kryterium r w alternatywie i i alternatywie j (z uwzglednieniem kierunku preferencji)
-                        if(criteria.get(r).direction == Criterium.Direction.MAX)    {
-                            d = alternatives.get(i).criteriaValues.get(r) - alternatives.get(j).criteriaValues.get(r);
+                        if(criteria.get(r).getDirection()  == Criterium.Direction.MAX)    {
+                            d = alternatives.get(i).getCriteriumValue(r) - alternatives.get(j).getCriteriumValue(r);
                         }
-                        else if(criteria.get(r).direction == Criterium.Direction.MIN)    {
-                            d = -1 * (alternatives.get(i).criteriaValues.get(r) - alternatives.get(j).criteriaValues.get(r));
+                        else if(criteria.get(r).getDirection() == Criterium.Direction.MIN)    {
+                            d = -1 * (alternatives.get(i).getCriteriumValue(r) - alternatives.get(j).getCriteriumValue(r));
                         }
                         
-                        if(d<=criteria.get(r).q)    {
+                        if(d<=criteria.get(r).getQ())    {
                             pd = 0; // jesli roznica jest mniejsza lub rowna progowi obojetnosci dla kryterium r wartosc relacji preferencji = 0
                         }
-                        else if(d<=criteria.get(r).p)    {
-                            pd = (d - criteria.get(r).q)/(criteria.get(r).p-criteria.get(r).q); // jesli roznica jest wieksza od progu obojetnosci i mniejsza lub rĂłwna progowi scislej preferencji dla kryterium r wyznacz na podstawie funkcji liniowej wartosc relacji preferencji
+                        else if(d<=criteria.get(r).getP())    {
+                            pd = (d - criteria.get(r).getQ())/(criteria.get(r).getP()-criteria.get(r).getQ()); // jesli roznica jest wieksza od progu obojetnosci i mniejsza lub rĂłwna progowi scislej preferencji dla kryterium r wyznacz na podstawie funkcji liniowej wartosc relacji preferencji
                         }
                         else    {
                             pd = 1; // jesli roznica jest wieksza od progu scislej preferencji dla kryterium r wartosc relacji preferencji = 1
                         }
-                        mpd.set(i, j, mpd.get(i, j) + criteria.get(r).weight * pd);
+                        mpd.set(i, j, mpd.get(i, j) + criteria.get(r).getWeight() * pd);
                     }
                 }
             }
@@ -218,11 +177,77 @@ public class Promethee {
             mpf_plus.set(i,0,mpf_plus.get(i,0)/(alternativesNum_-1));
             mpf_minus.set(i,0,mpf_minus.get(i,0)/(alternativesNum_-1));
             
-            alternatives.get(i).mpf_plus = mpf_plus.get(i, 0);
-            alternatives.get(i).mpf_minus = mpf_minus.get(i, 0);
-            alternatives.get(i).mpf =  alternatives.get(i).mpf_plus -  alternatives.get(i).mpf_minus;
+            alternatives.get(i).setMpf_plus(mpf_plus.get(i, 0));
+            alternatives.get(i).setMpf_minus(mpf_minus.get(i, 0));
+            alternatives.get(i).setMpf(alternatives.get(i).getMpf_plus() -  alternatives.get(i).getMpf_minus());
         }
         
     }
+
+    public LinkedList<Criterium> getCriteria() {
+        return criteria;
+    }
     
+    public Criterium getCriterium(int i)    {
+        return criteria.get(i);
+    }
+
+    public void setCriteria(LinkedList<Criterium> criteria) {
+        this.criteria = criteria;
+    }
+
+    public LinkedList<Alternative> getAlternatives() {
+        return alternatives;
+    }
+    
+    public Alternative getAlternative(int i)    {
+        return alternatives.get(i);
+    }
+
+    public void setAlternatives(LinkedList<Alternative> alternatives) {
+        this.alternatives = alternatives;
+    }
+
+    public LinkedList<Constraint> getConstraints() {
+        return constraints;
+    }
+    
+    public Constraint getConstraint(int i)  {
+        return constraints.get(i);
+    }
+
+    public void setConstraints(LinkedList<Constraint> constraints) {
+        this.constraints = constraints;
+    }
+
+    public LinkedList<Alternative> getAlternativesBestSet() {
+        return alternativesBestSet;
+    }
+
+    public void setAlternativesBestSet(LinkedList<Alternative> alternativesBestSet) {
+        this.alternativesBestSet = alternativesBestSet;
+    }
+
+    public double getBestSetMPF() {
+        return bestSetMPF;
+    }     
+    
+    public LinkedList<Alternative> getRanking() {
+        return ranking;
+    }
+    
+    public double getAlternativeValue(int i)    {
+        if(i<alternatives.size())   {
+            return alternatives.get(i).getMpf();
+        }
+        return 0;
+    }
+    
+    public double getAlternativeValue(Alternative alt)    {
+        return alt.getMpf();
+    }
+    
+    public Alternative getAlternativeByRank(int rank)    {
+        return ranking.get(rank);
+    }    
 }

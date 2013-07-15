@@ -4,7 +4,6 @@
  */
 package methods.Electre;
 
-import methods.Criterium;
 import java.util.LinkedList;
 
 

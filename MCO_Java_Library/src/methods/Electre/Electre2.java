@@ -14,8 +14,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-import methods.Criterium;
-
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.RealMatrix;
 
@@ -60,7 +58,7 @@ public class Electre2 {
 	
 	private Boolean is_alternative_preferred(int a, int b, int criterium) {
 		
-		if (criteria_.get(criterium).direction == Criterium.Direction.MAX) 
+		if (criteria_.get(criterium).getDirection() == Criterium.Direction.MAX) 
 			return (alternatives_.get(a)[criterium] >= alternatives_.get(b)[criterium]);
 		
 		else return (alternatives_.get(a)[criterium] <= alternatives_.get(b)[criterium]);
@@ -70,7 +68,7 @@ public class Electre2 {
 		  double w = 0;
 	        for (int i=0; i<criteria_.size(); i++)
 	        	if (is_alternative_preferred(a, b, i))
-	            	w += criteria_.get(i).threshold;
+	            	w += criteria_.get(i).getThreshold();
 
 	        return w;
 	  }
@@ -88,7 +86,7 @@ public class Electre2 {
 	public void normalize() {
 		for (int i=0; i<alternatives_.size(); i++)
 			for (int j=0; j<criteria_.size(); j++)
-				normalized_.setEntry(i, j, criteria_.get(j).threshold * alternatives_.get(i)[j] / Math.sqrt(sum_of_sq_for_crit(j)));
+				normalized_.setEntry(i, j, criteria_.get(j).getThreshold() * alternatives_.get(i)[j] / Math.sqrt(sum_of_sq_for_crit(j)));
 		
 	}
 	

@@ -4,87 +4,55 @@
  */
 package methods.AHP;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import org.ejml.simple.SimpleMatrix;
 import org.ejml.simple.SimpleEVD;
-import methods.Criterium;
-import methods.Alternative;
 
 /**
  *
  * @author Gabriela Pastuszka, Mateusz Krasucki
  */
 public class AHP {
-        public LinkedList<Criterium> criteria;
-        public LinkedList<Alternative> alternatives;
+        private LinkedList<Criterium> criteria;
+        private LinkedList<Alternative> alternatives;
+        private LinkedList<Alternative> ranking;
 	
-	private LinkedList<SimpleMatrix> altsCriteriaValues_; // alternatives' criteria paiwaise comparisons values matrix
+	private LinkedList<SimpleMatrix> altsCriteriaValues; // alternatives' criteria pariwaise comparisons values matrix
 	
-	private SimpleMatrix criteriaMatrix_; // criteria importance pairwaise comparisons matrix      
+	private SimpleMatrix criteriaMatrix; // criteria importance pairwaise comparisons matrix      
         
-        private double epsilon_;
+        private double epsilon;
               
+        
         private boolean calculated_;
         
         //results:
-        private SimpleMatrix criteriaWeights_; // eigenvector
-        private SimpleMatrix alternativesCriteriaValues_; // matrix of eigenvectors
-        private SimpleMatrix alternativesValues_; // results
+        private SimpleMatrix criteriaWeights; // eigenvector
+        private SimpleMatrix alternativesCriteriaValues; // matrix of eigenvectors
+        private SimpleMatrix alternativesValues; // results
         
 
 	public AHP() {
-		super();
-                criteria = new LinkedList<Criterium>();
-                alternatives = new LinkedList<Alternative>();
-		altsCriteriaValues_ = new LinkedList<SimpleMatrix>();
-                epsilon_ = 0.0001;
+                this.criteria = new LinkedList<Criterium>();
+                this.alternatives = new LinkedList<Alternative>();
+		this.altsCriteriaValues = new LinkedList<SimpleMatrix>();
+                this.epsilon = 0.0001;
+                this.calculated_ = false;
+	}
+        
+        public AHP(LinkedList<Criterium> criteria, LinkedList<Alternative> alternatives, LinkedList<SimpleMatrix> altsCriteriaValues, SimpleMatrix criteriaValues, double epsilon) {
+                this.criteria = criteria;
+                this.alternatives = alternatives;
+		this.altsCriteriaValues = altsCriteriaValues;
+                this.criteriaMatrix = criteriaMatrix;
+                this.epsilon = epsilon;
                 calculated_ = false;
 	}
-        
-        public SimpleMatrix getAternativesValues() {
-                if(calculated_) {
-                    return alternativesValues_;
-                }
-                return new SimpleMatrix(0,0);
-	}
-        
-        public double getAlternativeValue (int alternativeNum)    {
-                if(calculated_) {
-                    return alternativesValues_.get(alternativeNum);
-                }
-                return 0.0; 
-        }
-        
-        public SimpleMatrix getAternativesCriteriaValues() {
-                if(calculated_) {
-                    return alternativesCriteriaValues_;
-                }
-                return new SimpleMatrix(0,0);
-	}
-        
-        public double getAlternativeCriteriumValue (int alternativeNum, int criterumNum)    {
-                if(calculated_) {
-                    return alternativesCriteriaValues_.get(alternativeNum, criterumNum);
-                }
-                return 0.0; 
-        }
-        
-        public SimpleMatrix getCriteriaWeights() {
-                if(calculated_) {
-                    return criteriaWeights_;
-                }
-                return new SimpleMatrix(0,0);
-	}
-        
-        public double getCriteriumWeight(int criterumNum)    {
-                if(calculated_) {
-                    return criteriaWeights_.get(criterumNum);
-                }
-                return 0.0; 
-        }
-        
+                
         public void addAlternative(Alternative alternative)   {
-            alternative.id = alternatives.size()+1;
+            alternative.setId(alternatives.size()+1);
             alternatives.add(alternative);
         }
         
@@ -97,9 +65,9 @@ public class AHP {
                 SimpleMatrix criteriaMatrix = new SimpleMatrix(tmpCriteriaMatrix);
 		if (this.criteria.size() == criteriaMatrix.numRows() && this.criteria.size() == criteriaMatrix.numCols())   {
                    if(fixMatrix) 
-                        criteriaMatrix_ = fixMatrix(criteriaMatrix);
+                        this.criteriaMatrix = fixMatrix(criteriaMatrix);
                     else
-                        criteriaMatrix_ = criteriaMatrix;
+                        this.criteriaMatrix = criteriaMatrix;
                 }
                 else
                     System.out.println("Criteria pairwise comparison matrix is not square or size is not correct");
@@ -111,9 +79,9 @@ public class AHP {
 		if (alternatives.size() == altsCriteriumValues.numRows() && alternatives.size() == altsCriteriumValues.numCols())   {
                     if(alternatives.size() == altsCriteriumValues.numRows())   {
                         if(fixMatrix) 
-                            altsCriteriaValues_.add(fixMatrix(altsCriteriumValues));
+                            altsCriteriaValues.add(fixMatrix(altsCriteriumValues));
                         else
-                            altsCriteriaValues_.add(altsCriteriumValues);
+                            altsCriteriaValues.add(altsCriteriumValues);
                     }
                     else    
                        System.out.println("Wrong matrix size."); 
@@ -123,25 +91,47 @@ public class AHP {
 	}
        
         public void setEpsilon(double epsilon)  {
-            epsilon_ = epsilon; 
+            this.epsilon = epsilon; 
         }
         
         public void calculate() {
-            criteriaWeights_ = calculateEigenVector(criteriaMatrix_);
+            criteriaWeights = calculateEigenVector(criteriaMatrix);
+            
+            for(int i=0; i<criteria.size(); i++)    {
+                criteria.get(i).setWeight(criteriaWeights.get(i));
+            }
            
-            alternativesCriteriaValues_ = new SimpleMatrix(alternatives.size(), criteria.size());
+            alternativesCriteriaValues = new SimpleMatrix(alternatives.size(), criteria.size());
             SimpleMatrix tmp;
             int colNum = 0;
             
-            for(SimpleMatrix altsCriteriumValues : altsCriteriaValues_)  {
+            for(SimpleMatrix altsCriteriumValues : altsCriteriaValues)  {
                 tmp = calculateEigenVector(altsCriteriumValues);
                 for(int r = 0; r < alternatives.size(); r++)    {
-                    alternativesCriteriaValues_.set(r, colNum, tmp.get(r, 0));
+                    alternativesCriteriaValues.set(r, colNum, tmp.get(r, 0));
                 }
                 colNum++;
             }
            
-            alternativesValues_ = alternativesCriteriaValues_.mult(criteriaWeights_);
+            alternativesValues = alternativesCriteriaValues.mult(criteriaWeights);
+            
+            for(int i=0; i<alternatives.size(); i++)   {
+                alternatives.get(i).setScore(alternativesValues.get(i));
+            }
+            
+            ranking = new LinkedList<Alternative>(alternatives);
+            Collections.sort(ranking, new Comparator<Alternative>() {
+             @Override
+             public int compare(Alternative o1, Alternative o2) {
+                 if(o1.getScore()<o2.getScore())    {
+                     return 1;
+                 }
+                 else if(o1.getScore()>o2.getScore())   {
+                     return -1;
+                 }
+                 return 0;
+             }
+            });
             
             calculated_ = true;
         }
@@ -163,7 +153,7 @@ public class AHP {
 	
         
         
-	protected SimpleMatrix calculateEigenVector(SimpleMatrix matrix) {
+	private SimpleMatrix calculateEigenVector(SimpleMatrix matrix) {
                         SimpleMatrix tmp = matrix;
 			SimpleEVD<SimpleMatrix>  decomp;
                         double error = 0;
@@ -186,8 +176,87 @@ public class AHP {
                                 error = error + Math.abs(eigenVector2.get(i,0) - eigenVector1.get(i,0));
                             }     
                             eigenVector1 = eigenVector2;
-                        } while (error>epsilon_);
+                        } while (error>epsilon);
                         
                         return eigenVector1;
 	}
+        
+   
+        public LinkedList<Criterium> getCriteria() {
+            return criteria;
+        }
+
+        public Criterium getCriterium(int i)    {
+            return criteria.get(i);
+        }
+
+        public void setCriteria(LinkedList<Criterium> criteria) {
+            this.criteria = criteria;
+        }
+
+        public LinkedList<Alternative> getAlternatives() {
+            return alternatives;
+        }
+
+        public Alternative getAlternative(int i)    {
+            return alternatives.get(i);
+        }
+
+        public void setAlternatives(LinkedList<Alternative> alternatives) {
+            this.alternatives = alternatives;
+        }
+
+        public LinkedList<Alternative> getRanking() {
+            return ranking;
+        }
+
+        public double getAlternativeValue(int i)    {
+            if(i<alternatives.size())   {
+                return alternatives.get(i).getScore();
+            }
+            return 0;
+        }
+
+        public double getAlternativeValue(Alternative alt)    {
+            return alt.getScore();
+        }        
+    
+        public SimpleMatrix getAlternativesValues() {
+                if(calculated_) {
+                    return alternativesValues;
+                }
+                return new SimpleMatrix(0,0);
+	}
+                
+        public SimpleMatrix getAlternativesCriteriaValues() {
+                if(calculated_) {
+                    return alternativesCriteriaValues;
+                }
+                return new SimpleMatrix(0,0);
+	}
+        
+        public double getAlternativeCriteriumValue (int alternativeNum, int criterumNum)    {
+                if(calculated_) {
+                    return alternativesCriteriaValues.get(alternativeNum, criterumNum);
+                }
+                return 0.0; 
+        }
+        
+        public SimpleMatrix getCriteriaWeights() {
+                if(calculated_) {
+                    return criteriaWeights;
+                }
+                return new SimpleMatrix(0,0);
+	}
+        
+        public double getCriteriumWeight(int criterumNum)    {
+                if(calculated_) {
+                    return criteria.get(criterumNum).getWeight();
+                }
+                return 0.0; 
+        }
+        
+    public Alternative getAlternativeByRank(int rank)    {
+        return ranking.get(rank);
+    }        
 }

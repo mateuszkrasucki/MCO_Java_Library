@@ -1,18 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package methods.MAUT;
 
 /**
  *
  * @author Mateusz Krasucki
  */
-public interface Criterium {
-   public boolean isGroup();
-   public double getWeight();
-   public void setWeight(double weight);
-   public void setName(String name);
-   public String getName();
+public abstract class Criterium extends methods.BasicTypes.Criterium{
+   
+    public abstract boolean isGroup();    
+   
+        
+    public Criterium() {
+		super();
+    }
+    
+    public Criterium(String name, double weight) {
+        super(name,weight);
+    }    
+    
+    public Criterium(String name, Criterium.Direction direction, double weight) {
+	super(name, direction, weight);
+    }
     
 }
+

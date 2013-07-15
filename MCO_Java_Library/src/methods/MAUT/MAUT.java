@@ -9,8 +9,10 @@ import java.util.Comparator;
  */
 public class MAUT {
     
-    public LinkedList<Criterium> criteria;
-    public LinkedList<Alternative> alternatives;
+    private LinkedList<Criterium> criteria;
+    private LinkedList<Alternative> alternatives;
+    private LinkedList<Alternative> ranking;
+    
     
     
     private int iterationCount;
@@ -19,6 +21,7 @@ public class MAUT {
     public MAUT() {
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
+                ranking = new LinkedList<Alternative>();
     }
     
     public void addCriterium(Criterium criterium)   {
@@ -79,7 +82,7 @@ public class MAUT {
      }
     
     
-    public void calculateMAUT ()  {     
+    public void calculate ()  {     
         normalizeWeights();
         
         for(int i=0; i<alternatives.size(); i++)    {
@@ -91,7 +94,8 @@ public class MAUT {
             alternatives.get(i).setScore(tmpScore);
         }
         
-        Collections.sort(alternatives, new Comparator<Alternative>() {
+        ranking = new LinkedList<Alternative>(alternatives);
+        Collections.sort(ranking, new Comparator<Alternative>() {
          @Override
          public int compare(Alternative o1, Alternative o2) {
              if(o1.getScore()<o2.getScore())    {
@@ -105,4 +109,47 @@ public class MAUT {
      });
     
     }
+    
+    public LinkedList<Criterium> getCriteria() {
+        return criteria;
+    }
+    
+    public Criterium getCriterium(int i)    {
+        return criteria.get(i);
+    }
+
+    public void setCriteria(LinkedList<Criterium> criteria) {
+        this.criteria = criteria;
+    }
+
+    public LinkedList<Alternative> getAlternatives() {
+        return alternatives;
+    }
+    
+    public Alternative getAlternative(int i)    {
+        return alternatives.get(i);
+    }
+
+    public void setAlternatives(LinkedList<Alternative> alternatives) {
+        this.alternatives = alternatives;
+    }
+    
+    public LinkedList<Alternative> getRanking() {
+        return ranking;
+    }
+    
+    public double getAlternativeValue(int i)    {
+        if(i<alternatives.size())   {
+            return alternatives.get(i).getScore();
+        }
+        return 0;
+    }
+    
+    public double getAlternativeValue(Alternative alt)    {
+        return alt.getScore();
+    }
+    
+    public Alternative getAlternativeByRank(int rank)    {
+        return ranking.get(rank);
+    }    
 }

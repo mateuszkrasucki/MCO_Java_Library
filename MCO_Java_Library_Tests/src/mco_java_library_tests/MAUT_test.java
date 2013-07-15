@@ -21,10 +21,10 @@ public class MAUT_test {
     }
     
     private static void showCriteria(MAUT maut)  {
-        for(int i=0;i<maut.criteria.size(); i++)    {
-            System.out.println(maut.criteria.get(i).getName() + " " + maut.criteria.get(i).getWeight());
-            if(maut.criteria.get(i).isGroup())  {
-                GroupCriterium groupCriterium = (GroupCriterium)maut.criteria.get(i);
+        for(int i=0;i<maut.getCriteria().size(); i++)    {
+            System.out.println(maut.getCriterium(i).getName() + " " + maut.getCriterium(i).getWeight());
+            if(maut.getCriterium(i).isGroup())  {
+                GroupCriterium groupCriterium = (GroupCriterium)maut.getCriterium(i);
                 showGroupCriterium(groupCriterium);
             }
         }
@@ -79,12 +79,12 @@ public class MAUT_test {
         alt3.setCriteriaValues(alt3_val);
         maut_test.addAlternative(alt3);
         
-        maut_test.calculateMAUT();
+        maut_test.calculate();
         
         showCriteria(maut_test);
         
-        for(int i=0; i<maut_test.alternatives.size(); i++)  {
-            System.out.println(maut_test.alternatives.get(i).getName() + " " + maut_test.alternatives.get(i).getScore());
+        for(int i=0; i<maut_test.getAlternatives().size(); i++)  {
+            System.out.println(maut_test.getAlternatives().get(i).getName() + " " + maut_test.getAlternatives().get(i).getScore());
         }
         
         

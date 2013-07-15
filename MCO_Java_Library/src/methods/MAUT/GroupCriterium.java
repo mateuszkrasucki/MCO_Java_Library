@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package methods.MAUT;
 
 import java.util.LinkedList;
@@ -10,39 +6,37 @@ import java.util.LinkedList;
  *
  * @author Mateusz Krasucki
  */
-public class GroupCriterium implements Criterium {
-    private String name;
-    private double weight;
+public class GroupCriterium extends Criterium{
     private LinkedList<Criterium> innerCriteria;
-            
+    
+    
+    public GroupCriterium() {
+		super();
+                innerCriteria = new LinkedList<Criterium>();
+    }      
     
     public GroupCriterium(String name, double weight) {
-		this.name = name;
-		this.weight = weight;
+		super(name,weight);
                 innerCriteria = new LinkedList<Criterium>();
-        }
+    }
+    
+    public GroupCriterium(String name, double weight, LinkedList<Criterium> innerCriteria) {
+		super(name,weight);
+                this.innerCriteria = innerCriteria;
+    }
     
     public boolean isGroup()    {
         return true;
     }
-   
 
-    public String getName() {
-        return name;
+    public LinkedList<Criterium> getInnerCriteria() {
+        return innerCriteria;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setInnerCriteria(LinkedList<Criterium> innerCriteria) {
+        this.innerCriteria = innerCriteria;
     }
-
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
+     
     public Criterium getInnerCriterium(int i) {
         return innerCriteria.get(i);
     }
