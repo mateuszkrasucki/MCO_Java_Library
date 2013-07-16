@@ -190,4 +190,12 @@ public class Promethee1 {
     public double getAlternativeValue(Alternative alt)    {
         return alt.getMpf_plus();
     }
+    
+    public int getCriteriaNum() {
+        return this.criteria.size();
+    }
+    
+    public int getAlternativesNum() {
+        return this.alternatives.size();
+    }
 }

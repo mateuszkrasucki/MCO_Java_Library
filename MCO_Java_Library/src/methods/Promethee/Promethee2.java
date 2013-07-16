@@ -164,4 +164,12 @@ public class Promethee2 {
     public Alternative getAlternativeByRank(int rank)    {
         return ranking.get(rank);
     }
+    
+    public int getCriteriaNum() {
+        return this.criteria.size();
+    }
+    
+    public int getAlternativesNum() {
+        return this.alternatives.size();
+    }
 }
