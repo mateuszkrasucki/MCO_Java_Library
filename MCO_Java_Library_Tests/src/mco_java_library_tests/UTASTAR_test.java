@@ -33,31 +33,31 @@ public class UTASTAR_test {
         test.addCriterium(c2);
         test.addCriterium(c3);
         
-        ReferenceAlternative alt1 = new ReferenceAlternative();
+        Alternative alt1 = new Alternative();
         alt1.addCriteriumValue(-3);
         alt1.addCriteriumValue(-10);
         alt1.addCriteriumValue(1);
         alt1.setPreferenceStanding(1);
         
-        ReferenceAlternative alt2 = new ReferenceAlternative();
+        Alternative alt2 = new Alternative();
         alt2.addCriteriumValue(-4);
         alt2.addCriteriumValue(-20);
         alt2.addCriteriumValue(2);
         alt2.setPreferenceStanding(2);
         
-        ReferenceAlternative alt3 = new ReferenceAlternative();
+        Alternative alt3 = new Alternative();
         alt3.addCriteriumValue(-2);
         alt3.addCriteriumValue(-20);
         alt3.addCriteriumValue(0);
         alt3.setPreferenceStanding(2);
         
-        ReferenceAlternative alt4 = new ReferenceAlternative();
+        Alternative alt4 = new Alternative();
         alt4.addCriteriumValue(-6);
         alt4.addCriteriumValue(-40);
         alt4.addCriteriumValue(0);
         alt4.setPreferenceStanding(3);
         
-        ReferenceAlternative alt5 = new ReferenceAlternative();
+        Alternative alt5 = new Alternative();
         alt5.addCriteriumValue(-30);
         alt5.addCriteriumValue(-30);
         alt5.addCriteriumValue(3);

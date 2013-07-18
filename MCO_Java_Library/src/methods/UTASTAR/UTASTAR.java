@@ -10,8 +10,8 @@ import java.util.LinkedList;
  */
 public class UTASTAR {
     private LinkedList<Criterium> criteria;
-    private LinkedList<ReferenceAlternative> referenceAlternatives;
-    private LinkedList<ReferenceAlternative> referenceAlternativesRanking;
+    private LinkedList<Alternative> referenceAlternatives;
+    private LinkedList<Alternative> referenceAlternativesRanking;
     
     private LinkedList<Alternative> alternatives;
     private LinkedList<Alternative> ranking;
@@ -35,69 +35,69 @@ public class UTASTAR {
     
     public UTASTAR() {
                 this.criteria = new LinkedList<Criterium>();
-                this.referenceAlternatives = new LinkedList<ReferenceAlternative>();
+                this.referenceAlternatives = new LinkedList<Alternative>();
                 this.alternatives = new LinkedList<Alternative>();
-                this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                this.referenceAlternativesRanking = new LinkedList<Alternative>();
                 this.ranking = new LinkedList<Alternative>();
                 this.preferenceThreshold = 0.05;
                 this.epsilon = 0.00001;
     }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives) {
                 this.criteria = criteria;
                 this.referenceAlternatives = referenceAlternatives;
                 this.alternatives = new LinkedList<Alternative>();
-                this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                this.referenceAlternativesRanking = new LinkedList<Alternative>();
                 this.ranking = new LinkedList<Alternative>();
                 this.preferenceThreshold = 0.05;
                 this.epsilon = 0.00001;
     }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives, double preferenceThreshold) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives, double preferenceThreshold) {
                  this.criteria = criteria;
                  this.referenceAlternatives = referenceAlternatives;
                  this.alternatives = new LinkedList<Alternative>();
-                 this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                 this.referenceAlternativesRanking = new LinkedList<Alternative>();
                  this.ranking = new LinkedList<Alternative>();
                  this.preferenceThreshold = preferenceThreshold;
                  this.epsilon = 0.00001;            
      }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives, double preferenceThreshold, double epsilon) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives, double preferenceThreshold, double epsilon) {
                  this.criteria = criteria;
                  this.referenceAlternatives = referenceAlternatives;
                  this.alternatives = new LinkedList<Alternative>();
-                 this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                 this.referenceAlternativesRanking = new LinkedList<Alternative>();
                  this.ranking = new LinkedList<Alternative>();
                  this.preferenceThreshold = preferenceThreshold;
                  this.epsilon = epsilon;          
      }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives, LinkedList<Alternative> alternatives) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives, LinkedList<Alternative> alternatives) {
                 this.criteria = criteria;
                 this.referenceAlternatives = referenceAlternatives;
                 this.alternatives = alternatives;
-                this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                this.referenceAlternativesRanking = new LinkedList<Alternative>();
                 this.ranking = new LinkedList<Alternative>();
                 this.preferenceThreshold = 0.05;
                 this.epsilon = 0.00001;
     }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives, LinkedList<Alternative> alternatives, double preferenceThreshold) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives, LinkedList<Alternative> alternatives, double preferenceThreshold) {
                  this.criteria = criteria;
                  this.referenceAlternatives = referenceAlternatives;
                  this.alternatives = alternatives;
-                 this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                 this.referenceAlternativesRanking = new LinkedList<Alternative>();
                  this.ranking = new LinkedList<Alternative>();
                  this.preferenceThreshold = preferenceThreshold;
                  this.epsilon = 0.00001;            
      }
     
-    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<ReferenceAlternative> referenceAlternatives, LinkedList<Alternative> alternatives, double preferenceThreshold, double epsilon) {
+    public UTASTAR(LinkedList<Criterium> criteria, LinkedList<Alternative> referenceAlternatives, LinkedList<Alternative> alternatives, double preferenceThreshold, double epsilon) {
                  this.criteria = criteria;
                  this.referenceAlternatives = referenceAlternatives;
                  this.alternatives = alternatives;
-                 this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>();
+                 this.referenceAlternativesRanking = new LinkedList<Alternative>();
                  this.ranking = new LinkedList<Alternative>();
                  this.preferenceThreshold = preferenceThreshold;
                  this.epsilon = epsilon;          
@@ -470,16 +470,9 @@ public class UTASTAR {
         alternative.setScore(score);
     }
     
-    public void calculateAlternativeScore(ReferenceAlternative alternative) {
-        double score = 0;
-        for(int i=0; i<this.getCriteriaNum(); i++)  {
-            score = score + this.getCriterium(i).getMarginalUtilityFunctionValue(alternative.getCriteriumValue(i));
-        }
-        alternative.setScore(score);
-    }    
-    
+  
     public void calculate(){
-
+        try {
           int i, j, k;
 
           createValueFunctionsOfU();
@@ -548,7 +541,12 @@ public class UTASTAR {
               this.calculateAlternativeScore(this.getAlternative(z));
           }          
           
-          this.referenceAlternativesRanking = new LinkedList<ReferenceAlternative>(referenceAlternatives);
+          
+          if(alternatives.size()==0)    {
+              alternatives = referenceAlternativesRanking;
+          }
+      
+          this.referenceAlternativesRanking = new LinkedList<Alternative>(referenceAlternatives);
           this.ranking = new LinkedList<Alternative>(alternatives);
           
           
@@ -577,6 +575,10 @@ public class UTASTAR {
                  return 0;
              }
             });
+        }
+        catch(Exception e)  {
+            System.out.println("Something is wrong. Probably you did not add referenceAlternatives or there errors in data");
+        }
             
       }
     
@@ -584,7 +586,7 @@ public class UTASTAR {
             criteria.add(criterium);
     }
     
-    public void addReferenceAlternative(ReferenceAlternative referenceAlternative)   {
+    public void addReferenceAlternative(Alternative referenceAlternative)   {
        referenceAlternative.setId(referenceAlternatives.size()+1);
        referenceAlternatives.add(referenceAlternative);
     }
@@ -600,6 +602,9 @@ public class UTASTAR {
     }
     
     public Criterium getCriterium(int i)    {
+        if(i>=this.criteria.size()) {
+            throw new IndexOutOfBoundsException("There is no criterium with this index.");
+        }
         return criteria.get(i);
     }
 
@@ -607,15 +612,18 @@ public class UTASTAR {
         this.criteria = criteria;
     }
 
-    public LinkedList<ReferenceAlternative> getReferenceAlternatives() {
+    public LinkedList<Alternative> getReferenceAlternatives() {
         return referenceAlternatives;
     }
     
-    public ReferenceAlternative getReferenceAlternative(int i)    {
+    public Alternative getReferenceAlternative(int i)    {
+        if(i>=this.referenceAlternatives.size()) {
+            throw new IndexOutOfBoundsException("There is no reference alternative with this index.");
+        }
         return referenceAlternatives.get(i);
     }
 
-    public void setReferenceAlternatives(LinkedList<ReferenceAlternative> referenceAlternatives) {
+    public void setReferenceAlternatives(LinkedList<Alternative> referenceAlternatives) {
         this.referenceAlternatives = referenceAlternatives;
     }
     
@@ -624,6 +632,9 @@ public class UTASTAR {
     }
     
     public Alternative getAlternative(int i)    {
+        if(i>=this.alternatives.size()) {
+            throw new IndexOutOfBoundsException("There is no alternative with this index.");
+        }
         return alternatives.get(i);
     }
 
@@ -635,7 +646,7 @@ public class UTASTAR {
         return ranking;
     }
 
-    public LinkedList<ReferenceAlternative> getReferenceAlternativesRanking() {
+    public LinkedList<Alternative> getReferenceAlternativesRanking() {
         return referenceAlternativesRanking;
     }
     
@@ -658,15 +669,17 @@ public class UTASTAR {
         return alt.getScore();
     }
     
-    public double getReferemceAlternativeValue(ReferenceAlternative alt)    {
-        return alt.getScore();
-    }    
-    
     public Alternative getAlternativeByRank(int rank)    {
+        if(rank>=this.ranking.size()) {
+            throw new IndexOutOfBoundsException("There is no alternative with this index.");
+        }
         return ranking.get(rank);
     }    
     
     public Alternative getReferenceAlternativeByRank(int rank)    {
+        if(rank>=this.referenceAlternativesRanking.size()) {
+            throw new IndexOutOfBoundsException("There is no alternative with this index.");
+        }
         return this.referenceAlternativesRanking.get(rank);
     }      
     
@@ -683,6 +696,9 @@ public class UTASTAR {
     }
 
     public double[][] getAverageWeightMatrix() {
+        if(this.averageWeightMatrix == null)    {
+            throw new IndexOutOfBoundsException("Averafe Weight Matrix is not calculated.");
+        }
         return averageWeightMatrix;
     }
   
