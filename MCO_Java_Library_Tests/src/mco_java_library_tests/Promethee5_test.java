@@ -90,9 +90,9 @@ public class Promethee5_test {
             System.out.print(". ");
             System.out.print(promethee.getAlternative(i).getName());
             System.out.print(" ");
-            System.out.println(promethee.getAlternative(i).getMpf_plus());
+            System.out.println(promethee.getAlternative(i).getMpfPlus());
             System.out.print(" ");
-            System.out.print(promethee.getAlternative(i).getMpf_minus());
+            System.out.print(promethee.getAlternative(i).getMpfMinus());
             System.out.print(" ");
             System.out.println(promethee.getAlternative(i).getMpf());
         }       

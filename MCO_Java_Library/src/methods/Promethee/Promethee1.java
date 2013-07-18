@@ -60,10 +60,10 @@ public class Promethee1 {
         Collections.sort(ranking,new Comparator<Alternative>() {
          @Override
          public int compare(Alternative o1, Alternative o2) {
-             if(o1.getMpf_plus()<o2.getMpf_plus())    {
+             if(o1.getMpfPlus()<o2.getMpfPlus())    {
                  return 1;
              }
-             else if(o1.getMpf_plus()>o2.getMpf_plus())   {
+             else if(o1.getMpfPlus()>o2.getMpfPlus())   {
                  return -1;
              }
              return 0;
@@ -72,19 +72,19 @@ public class Promethee1 {
     }
     
     public int getP1Preference(Alternative a, Alternative b)   {
-        if((a.getMpf_plus()>b.getMpf_plus()) && (a.getMpf_minus()<=b.getMpf_minus())) {
+        if((a.getMpfPlus()>b.getMpfPlus()) && (a.getMpfMinus()<=b.getMpfMinus())) {
             return 1;         
         }
-        else if((a.getMpf_plus()==b.getMpf_minus()) && (a.getMpf_minus()<b.getMpf_minus())) {
+        else if((a.getMpfPlus()==b.getMpfMinus()) && (a.getMpfMinus()<b.getMpfMinus())) {
             return 1;
         }
-        else if((a.getMpf_plus()==b.getMpf_plus()) && (a.getMpf_minus() == b.getMpf_minus()))   {
+        else if((a.getMpfPlus()==b.getMpfPlus()) && (a.getMpfMinus() == b.getMpfMinus()))   {
             return 0;
         }
-        else if((a.getMpf_plus()>b.getMpf_plus()) && (a.getMpf_minus()>b.getMpf_minus()))   {
+        else if((a.getMpfPlus()>b.getMpfPlus()) && (a.getMpfMinus()>b.getMpfMinus()))   {
             return -1;
         }
-        else if ((a.getMpf_plus()<b.getMpf_plus()) && (a.getMpf_minus()<b.getMpf_minus())) {
+        else if ((a.getMpfPlus()<b.getMpfPlus()) && (a.getMpfMinus()<b.getMpfMinus())) {
             return -1;           
         }
         return 0;
@@ -141,9 +141,9 @@ public class Promethee1 {
             mpf_plus.set(i,0,mpf_plus.get(i,0)/(alternativesNum_-1));
             mpf_minus.set(i,0,mpf_minus.get(i,0)/(alternativesNum_-1));
             
-            alternatives.get(i).setMpf_plus(mpf_plus.get(i, 0));
-            alternatives.get(i).setMpf_minus(mpf_minus.get(i, 0));
-            alternatives.get(i).setMpf(alternatives.get(i).getMpf_plus() -  alternatives.get(i).getMpf_minus());
+            alternatives.get(i).setMpfPlus(mpf_plus.get(i, 0));
+            alternatives.get(i).setMpfMinus(mpf_minus.get(i, 0));
+            alternatives.get(i).setMpf(alternatives.get(i).getMpfPlus() -  alternatives.get(i).getMpfMinus());
         }
         
     }
@@ -182,13 +182,13 @@ public class Promethee1 {
     
     public double getAlternativeValue(int i)    {
         if(i<alternatives.size())   {
-            return alternatives.get(i).getMpf_plus();
+            return alternatives.get(i).getMpfPlus();
         }
         return 0;
     }
     
     public double getAlternativeValue(Alternative alt)    {
-        return alt.getMpf_plus();
+        return alt.getMpfPlus();
     }
     
     public int getCriteriaNum() {

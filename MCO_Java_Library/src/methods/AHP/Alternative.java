@@ -7,7 +7,7 @@ import java.util.LinkedList;
  * @author mateuszkrasucki
  */
 public class Alternative extends methods.BasicTypes.Alternative {
-        private double AHPscore;
+        private double ahpScore;
     
     
 	public Alternative() {
@@ -20,11 +20,11 @@ public class Alternative extends methods.BasicTypes.Alternative {
 	}
         
         public double getScore() {
-            return AHPscore;
+            return ahpScore;
         }
 
-        protected void setScore(double AHPscore) {
-            this.AHPscore = AHPscore;
+        protected void setScore(double ahpScore) {
+            this.ahpScore = ahpScore;
         }
         
               

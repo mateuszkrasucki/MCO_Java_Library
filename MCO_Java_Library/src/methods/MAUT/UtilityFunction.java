@@ -8,6 +8,6 @@ package methods.MAUT;
  *
  * @author Mateusz Krasucki
  */
-public interface Utility {
+public interface UtilityFunction {
     public double calculate(double value);
 }

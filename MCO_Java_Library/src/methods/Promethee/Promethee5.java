@@ -177,9 +177,9 @@ public class Promethee5 {
             mpf_plus.set(i,0,mpf_plus.get(i,0)/(alternativesNum_-1));
             mpf_minus.set(i,0,mpf_minus.get(i,0)/(alternativesNum_-1));
             
-            alternatives.get(i).setMpf_plus(mpf_plus.get(i, 0));
-            alternatives.get(i).setMpf_minus(mpf_minus.get(i, 0));
-            alternatives.get(i).setMpf(alternatives.get(i).getMpf_plus() -  alternatives.get(i).getMpf_minus());
+            alternatives.get(i).setMpfPlus(mpf_plus.get(i, 0));
+            alternatives.get(i).setMpfMinus(mpf_minus.get(i, 0));
+            alternatives.get(i).setMpf(alternatives.get(i).getMpfPlus() -  alternatives.get(i).getMpfMinus());
         }
         
     }

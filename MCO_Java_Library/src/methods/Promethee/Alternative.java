@@ -7,46 +7,46 @@ import java.util.LinkedList;
  * @author mateuszkrasucki
  */
 public class Alternative extends methods.BasicTypes.Alternative {
-        private double mpf_plus;
-        private double mpf_minus;
+        private double mpfPlus;
+        private double mpfMinus;
         private double mpf;
         
         public Alternative() {
 		super();
-                mpf_plus = 0;
-                mpf_minus = 0;
+                mpfPlus = 0;
+                mpfMinus = 0;
                 mpf = 0;
 	}
         
        
 	public Alternative(String name) {
 		super(name);
-                mpf_plus = 0;
-                mpf_minus = 0;
+                mpfPlus = 0;
+                mpfMinus = 0;
                 mpf = 0;
 	}
         
         public Alternative(String name, LinkedList<Double> criteriaValues) {
 		super(name, criteriaValues);
-                mpf_plus = 0;
-                mpf_minus = 0;
+                mpfPlus = 0;
+                mpfMinus = 0;
                 mpf = 0;
 	}
 
-        public double getMpf_plus() {
-            return mpf_plus;
+        public double getMpfPlus() {
+            return mpfPlus;
         }
 
-        protected void setMpf_plus(double mpf_plus) {
-            this.mpf_plus = mpf_plus;
+        protected void setMpfPlus(double mpfPlus) {
+            this.mpfPlus = mpfPlus;
         }
 
-        public double getMpf_minus() {
-            return mpf_minus;
+        public double getMpfMinus() {
+            return mpfMinus;
         }
 
-        protected void setMpf_minus(double mpf_minus) {
-            this.mpf_minus = mpf_minus;
+        protected void setMpfMinus(double mpfMinus) {
+            this.mpfMinus = mpfMinus;
         }
 
         public double getMpf() {

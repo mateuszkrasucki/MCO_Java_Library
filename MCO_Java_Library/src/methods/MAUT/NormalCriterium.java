@@ -10,31 +10,31 @@ public class NormalCriterium extends Criterium {
         public enum UtilityFunctionType {
             LINEAR, EXPONENTIAL
         }
-        private Utility utilityFunction;
+        private UtilityFunction utilityFunction;
         
         
         public NormalCriterium()    {
             super();
-            this.utilityFunction = new LinearUtility(0,1);
+            this.utilityFunction = new LinearUtilityFunction(0,1);
         }
        	
 	public NormalCriterium(String name, Direction direction, double weight, UtilityFunctionType utilityFunctionType, double worst, double best) {
 		super(name,direction,weight);
                 
                 if(utilityFunctionType == UtilityFunctionType.LINEAR)    {
-                    this.utilityFunction = new LinearUtility(worst,best);
+                    this.utilityFunction = new LinearUtilityFunction(worst,best);
                 }
                 else if(utilityFunctionType == UtilityFunctionType.EXPONENTIAL) {
-                    this.utilityFunction = new ExponentialUtility(worst,best);
+                    this.utilityFunction = new ExponentialUtilityFunction(worst,best);
                 }
         }
         
 	public NormalCriterium(String name, Direction direction, double weight, double worst, double best, double c) {
 		super(name,direction,weight);
-                this.utilityFunction = new ExponentialUtility(worst,best,c);
+                this.utilityFunction = new ExponentialUtilityFunction(worst,best,c);
         }        
         
-	public NormalCriterium(String name, Direction direction, double weight, Utility utilityFunction) {
+	public NormalCriterium(String name, Direction direction, double weight, UtilityFunction utilityFunction) {
 		super(name,direction,weight);
                 this.utilityFunction = utilityFunction;
         }    
@@ -43,11 +43,11 @@ public class NormalCriterium extends Criterium {
             return false;
         }
 
-        public Utility getUtilityFunction() {
+        public UtilityFunction getUtilityFunction() {
             return utilityFunction;
         }
 
-        public void setUtilityFunction(Utility utilityFunction) {
+        public void setUtilityFunction(UtilityFunction utilityFunction) {
             this.utilityFunction = utilityFunction;
         }
         

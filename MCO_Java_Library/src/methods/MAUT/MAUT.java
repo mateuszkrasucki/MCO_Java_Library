@@ -24,6 +24,12 @@ public class MAUT {
                 ranking = new LinkedList<Alternative>();
     }
     
+    public MAUT(LinkedList<Criterium> criteria, LinkedList<Alternative> alternatives) {
+                this.criteria = criteria;
+                this.alternatives = alternatives;
+                ranking = new LinkedList<Alternative>();
+    }
+    
     public void addCriterium(Criterium criterium)   {
             criteria.add(criterium);
     }

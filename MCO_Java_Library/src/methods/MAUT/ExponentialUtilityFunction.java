@@ -5,19 +5,19 @@ package methods.MAUT;
  *
  * @author Mateusz Krasucki
  */
-public class ExponentialUtility implements Utility {
+public class ExponentialUtilityFunction implements UtilityFunction {
         
     private double a_;
     private double b_;
     private double c_;
    
-    public ExponentialUtility(double worst, double best)  {
+    public ExponentialUtilityFunction(double worst, double best)  {
         c_ = 1;
         a_ = 1/(1-Math.exp(best-worst));
         b_ = -1/(Math.exp(worst) - Math.exp(best));      
     }
     
-    public ExponentialUtility(double worst, double best, double c)  {
+    public ExponentialUtilityFunction(double worst, double best, double c)  {
         c_ = c;
         a_ = 1/(1-Math.exp(c_*(best-worst)));
         b_ = -1/(Math.exp(c_*worst) - Math.exp(c_*best));      

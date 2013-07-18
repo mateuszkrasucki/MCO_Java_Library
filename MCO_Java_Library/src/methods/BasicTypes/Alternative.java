@@ -36,7 +36,7 @@ public abstract class Alternative {
 	}
         
                 
-        public void addCriteriumValue(Double value)   {
+        public void addCriteriumValue(double value)   {
             this.criteriaValues.add(value);
         }
         

@@ -5,12 +5,12 @@ package methods.MAUT;
  *
  * @author Mateusz Krasucki
  */
-public class LinearUtility implements Utility {
+public class LinearUtilityFunction implements UtilityFunction {
         
     private double a_;
     private double b_;
   
-    public LinearUtility(double worst, double best)  {
+    public LinearUtilityFunction(double worst, double best)  {
         a_ = -worst/(best-worst);
         b_ = 1/(best-worst);     
     }

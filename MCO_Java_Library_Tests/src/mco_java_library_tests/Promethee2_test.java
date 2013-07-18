@@ -87,9 +87,9 @@ public class Promethee2_test {
             System.out.print(". ");
             System.out.print(promethee.getAlternativeByRank(i).getName());
             System.out.print(" ");
-            System.out.println(promethee.getAlternativeByRank(i).getMpf_plus());
+            System.out.println(promethee.getAlternativeByRank(i).getMpfPlus());
             System.out.print(" ");
-            System.out.print(promethee.getAlternativeByRank(i).getMpf_minus());
+            System.out.print(promethee.getAlternativeByRank(i).getMpfMinus());
             System.out.print(" ");
             System.out.println(promethee.getAlternativeByRank(i).getMpf());
         }  

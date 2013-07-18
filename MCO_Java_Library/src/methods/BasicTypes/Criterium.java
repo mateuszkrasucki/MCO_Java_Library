@@ -18,7 +18,13 @@ public abstract class Criterium {
 	public Criterium() {
 		name="";
 		direction=Criterium.Direction.MAX;
-		weight = 0;
+		this.weight = 1; 
+	}
+        
+	public Criterium(String name) {
+		this.name = name;
+		direction=Criterium.Direction.MAX;
+		this.weight = 1; 
 	}
         
 	public Criterium(String name, Criterium.Direction direction, double weight) {
@@ -30,7 +36,8 @@ public abstract class Criterium {
 	public Criterium(String name, Criterium.Direction direction) {
 		this.name = name;
 		this.direction = direction;
-		this.weight = 0;        }
+		this.weight = 1;  
+        }
         
 	public Criterium(String name, double weight) {
 		this.name = name;
