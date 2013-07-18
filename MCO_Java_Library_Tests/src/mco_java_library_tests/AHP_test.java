@@ -45,13 +45,13 @@ public class AHP_test {
         
         AHP ahpTest = new AHP();
         
-        Criterium c_style = new Criterium("style", Criterium.Direction.MAX);
+        Criterium c_style = new Criterium("style");
         ahpTest.addCriterium(c_style);
         
-        Criterium c_reliability = new Criterium("reliability", Criterium.Direction.MAX);
+        Criterium c_reliability = new Criterium("reliability");
         ahpTest.addCriterium(c_reliability);
         
-        Criterium c_fuelEconomy = new Criterium("fuelEconomy", Criterium.Direction.MAX);
+        Criterium c_fuelEconomy = new Criterium("fuelEconomy");
         ahpTest.addCriterium(c_fuelEconomy);
         
         ahpTest.setCriteriaMatrix(criteria, true);

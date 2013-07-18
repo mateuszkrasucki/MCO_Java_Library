@@ -15,6 +15,11 @@ public class GroupCriterium extends Criterium{
                 innerCriteria = new LinkedList<Criterium>();
     }      
     
+    public GroupCriterium(String name) {
+		super(name);
+                innerCriteria = new LinkedList<Criterium>();
+    }    
+    
     public GroupCriterium(String name, double weight) {
 		super(name,weight);
                 innerCriteria = new LinkedList<Criterium>();

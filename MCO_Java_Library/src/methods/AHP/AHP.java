@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package methods.AHP;
 
 import java.util.Collections;
@@ -155,7 +151,7 @@ public class AHP {
         
 	private SimpleMatrix calculateEigenVector(SimpleMatrix matrix) {
                         SimpleMatrix tmp = matrix;
-			SimpleEVD<SimpleMatrix>  decomp;
+			SimpleEVD  decomp;
                         double error = 0;
                         SimpleMatrix eigenVector1 = new SimpleMatrix(matrix.numRows(),1);
                         SimpleMatrix eigenVector2 = new SimpleMatrix(matrix.numRows(),1);;

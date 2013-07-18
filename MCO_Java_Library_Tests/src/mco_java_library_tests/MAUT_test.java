@@ -36,18 +36,18 @@ public class MAUT_test {
         GroupCriterium c1 = new GroupCriterium("c1", 0.5);
         
         GroupCriterium c11 = new GroupCriterium("c11", 0.7);
-        NormalCriterium c111 = new NormalCriterium("c111", NormalCriterium.Direction.MAX, 0.6, NormalCriterium.UtilityFunctionType.LINEAR, 1, 10);
-        NormalCriterium c112 = new NormalCriterium("c112", NormalCriterium.Direction.MAX, 0.8, NormalCriterium.UtilityFunctionType.LINEAR, 1, 10);
+        NormalCriterium c111 = new NormalCriterium("c111", 0.6, NormalCriterium.UtilityFunctionType.LINEAR, 1, 10);
+        NormalCriterium c112 = new NormalCriterium("c112", 0.8, NormalCriterium.UtilityFunctionType.LINEAR, 1, 10);
         c11.addInnerCriterium(c111);
         c11.addInnerCriterium(c112);
         
         c1.addInnerCriterium(c11);
         
-        NormalCriterium c12 = new NormalCriterium("c12", NormalCriterium.Direction.MAX, 0.3, NormalCriterium.UtilityFunctionType.LINEAR, 2, 4);
+        NormalCriterium c12 = new NormalCriterium("c12", 0.3, NormalCriterium.UtilityFunctionType.LINEAR, 2, 4);
         
         c1.addInnerCriterium(c12);
         
-        NormalCriterium c2 = new NormalCriterium("c2", NormalCriterium.Direction.MAX, 0.5, NormalCriterium.UtilityFunctionType.LINEAR, 1, 9);
+        NormalCriterium c2 = new NormalCriterium("c2", 0.5, NormalCriterium.UtilityFunctionType.LINEAR, 1, 9);
 
         maut_test.addCriterium(c1);
         maut_test.addCriterium(c2);

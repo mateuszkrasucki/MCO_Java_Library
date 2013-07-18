@@ -15,7 +15,7 @@ public class MCO_Java_Library_Tests {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        UTASTAR_test.test();
+        AHP_test.test();
     }
 }
 

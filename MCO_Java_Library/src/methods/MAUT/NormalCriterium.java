@@ -18,8 +18,18 @@ public class NormalCriterium extends Criterium {
             this.utilityFunction = new LinearUtilityFunction(0,1);
         }
        	
-	public NormalCriterium(String name, Direction direction, double weight, UtilityFunctionType utilityFunctionType, double worst, double best) {
-		super(name,direction,weight);
+        public NormalCriterium(String name)    {
+            super(name);
+            this.utilityFunction = new LinearUtilityFunction(0,1);
+        }   
+        
+        public NormalCriterium(String name, double weight)    {
+            super(name, weight);
+            this.utilityFunction = new LinearUtilityFunction(0,1);
+        }          
+        
+	public NormalCriterium(String name, double weight, UtilityFunctionType utilityFunctionType, double worst, double best) {
+		super(name,weight);
                 
                 if(utilityFunctionType == UtilityFunctionType.LINEAR)    {
                     this.utilityFunction = new LinearUtilityFunction(worst,best);
@@ -29,13 +39,13 @@ public class NormalCriterium extends Criterium {
                 }
         }
         
-	public NormalCriterium(String name, Direction direction, double weight, double worst, double best, double c) {
-		super(name,direction,weight);
+	public NormalCriterium(String name, double weight, double worst, double best, double c) {
+		super(name,weight);
                 this.utilityFunction = new ExponentialUtilityFunction(worst,best,c);
         }        
         
-	public NormalCriterium(String name, Direction direction, double weight, UtilityFunction utilityFunction) {
-		super(name,direction,weight);
+	public NormalCriterium(String name, double weight, UtilityFunction utilityFunction) {
+		super(name,weight);
                 this.utilityFunction = utilityFunction;
         }    
         

@@ -10,16 +10,16 @@ public abstract class Criterium extends methods.BasicTypes.Criterium{
    
         
     public Criterium() {
-		super();
+        super();
     }
+    
+    public Criterium(String name) {
+        super(name);
+    }  
     
     public Criterium(String name, double weight) {
         super(name,weight);
     }    
-    
-    public Criterium(String name, Criterium.Direction direction, double weight) {
-	super(name, direction, weight);
-    }
-    
+      
 }
 
