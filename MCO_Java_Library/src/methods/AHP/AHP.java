@@ -1,5 +1,9 @@
 package methods.AHP;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -28,6 +32,192 @@ public class AHP {
         private SimpleMatrix criteriaWeights; // eigenvector
         private SimpleMatrix alternativesCriteriaValues; // matrix of eigenvectors
         private SimpleMatrix alternativesValues; // results
+        
+        /**
+	* 
+	* Cosntructor with data read from file
+	* @param filename Filename where data can be read from. It should be structured as csv file in dataFileExamples/ahp.csv
+        * In the first line there should be epsilon value followed by criteria number and alternatives number. In the second line you should place alternatives' names. 
+        * Starting from third line there is place for criteria name and fixing matrix flag (fixMatrix or doNotFixMatrix) followed by alternatives' criterium pariwaise comparisons values matrix.
+        * At the end of the data file there should be criteriaMatrix (criteria pairwaise comparison matrix) with fixing matrix flag. It has to be preceded by line with "criteriaMatrix,fixMatrix" or "criteriaMatrix,doNotFixMatrix".
+	*/
+	public AHP(String filename) {		
+		alternatives = new LinkedList<Alternative>();
+                ranking = new LinkedList<Alternative>();
+                criteria = new LinkedList<Criterium>();
+			
+		BufferedReader br = null;
+		String line = "";
+		int altsCount = 0;
+                int criteriaCount = 0;
+                
+                boolean fixMatrix = false;
+                
+                String[] values;
+		
+		try {
+                    //first line of datafile
+			br = new BufferedReader(new FileReader(filename));
+        		line = br.readLine(); 
+                        if(line != null)    {
+				values = line.split(",");
+                                if(values.length==3)  {
+                                        try {
+                                            this.epsilon = Double.parseDouble(values[0]);
+                                            criteriaCount = Integer.parseInt(values[1]);
+                                            altsCount = Integer.parseInt(values[2]);
+                                        }
+                                        catch(Exception e)  {
+                                            throw new Exception("Wrong file format");
+                                        }
+                                }
+                                else    {
+                                    throw new Exception("Wrong file format");
+                                }                                    
+                        }
+                        else    {
+                            throw new Exception("Wrong file format");
+                        }
+                        
+                     //second line of datafile
+                        br = new BufferedReader(new FileReader(filename));
+        		line = br.readLine(); 
+                        if(line != null)    {
+				values = line.split(",");
+                                if(values.length==altsCount)  {
+                                        for(int j = 0; j<altsCount; j++) {
+                                            try{
+                                                Alternative alternative = new Alternative(values[j]);
+                                                alternative.setId(j);
+                                                alternatives.add(alternative);
+                                            }
+                                            catch(Exception e)  {
+                                                throw new Exception("Wrong file format.");
+                                            }
+                                        }
+                                }
+                                else    {
+                                        throw new Exception("Wrong file format");
+                                }  
+                        }
+                        else    {
+                            throw new Exception("Wrong file format");
+                        }
+                        
+                                               
+                        for(int c=0; c<criteriaCount; c++)    {
+                            br = new BufferedReader(new FileReader(filename));
+                            line = br.readLine(); 
+                            if(line != null)    {
+				values = line.split(",");
+                                if(values.length==2)  {
+                                    Criterium criterium = new Criterium(values[0]);
+                                    
+                                    if(values[1]=="fixMatrix")  {
+                                        fixMatrix = true;
+                                    }
+                                    else if(values[1]!="doNotFixMatrix") {
+                                        fixMatrix = false;
+                                    }
+                                    else    {
+                                        throw new Exception("Wrong file format");
+                                    }
+                                    
+                                    this.criteria.add(criterium);
+                                }
+                                else    {
+                                    throw new Exception("Wrong file format");
+                                }
+                            }
+                            else    {
+                                throw new Exception("Wrong file format");
+                            }
+                            
+                            double[][] altsCriteriumValues = new double[altsCount][altsCount];
+                            
+                            for(int l=0; l<altsCount;l++) {
+                                br = new BufferedReader(new FileReader(filename));
+                                line = br.readLine(); 
+                                if(line != null)    {
+                                    values = line.split(",");
+                                    if(values.length==altsCount)  {
+                                        for(int r=0;r<altsCount;r++)    {
+                                            altsCriteriumValues[l][r] = Double.parseDouble(values[r]);
+                                        }
+                                    }
+                                    else    {
+                                        throw new Exception("Wrong file format");
+                                    }
+                                }
+                                else    {
+                                    throw new Exception("Wrong file format");
+                                }
+                            }
+                            this.addAltsCriteriumValues(altsCriteriumValues, fixMatrix);
+                                                       
+                        }
+                        
+                        br = new BufferedReader(new FileReader(filename));
+                        line = br.readLine(); 
+                        if(line != null)    {
+                            values = line.split(",");
+                            if(values.length==2 && values[0]=="criteriaMatrix")  {                                  
+                                    if(values[1]=="fixMatrix")  {
+                                        fixMatrix = true;
+                                    }
+                                    else if(values[1]!="doNotFixMatrix") {
+                                        fixMatrix = false;
+                                    }
+                                    else    {
+                                        throw new Exception("Wrong file format");
+                                    }
+                                    
+                                                                        
+                                    double[][] tmpCriteriaMatrix = new double[criteriaCount][criteriaCount];
+                            
+                                    for(int l=0; l<criteriaCount;l++) {
+                                        br = new BufferedReader(new FileReader(filename));
+                                        line = br.readLine(); 
+                                        if(line != null)    {
+                                            values = line.split(",");
+                                            if(values.length==criteriaCount)  {
+                                                for(int r=0;r<criteriaCount;r++)    {
+                                                    tmpCriteriaMatrix[l][r] = Double.parseDouble(values[r]);
+                                                }
+                                            }
+                                            else    {
+                                                throw new Exception("Wrong file format");
+                                            }
+                                        }
+                                        else    {
+                                            throw new Exception("Wrong file format");
+                                        }
+                                    }
+                                    this.setCriteriaMatrix(tmpCriteriaMatrix, fixMatrix);
+                                    
+                                }
+                                else    {
+                                    throw new Exception("Wrong file format");
+                                }
+                            }
+                            else    {
+                                throw new Exception("Wrong file format");
+                            }
+                        
+                        br.close();
+                }
+                catch (FileNotFoundException e) {
+        			e.printStackTrace();
+		}
+		catch (IOException e) {
+				e.printStackTrace();
+				
+                } catch (Exception e) {
+        			e.printStackTrace();
+		}
+               					
+    }
+	
         
 
 	public AHP() {
