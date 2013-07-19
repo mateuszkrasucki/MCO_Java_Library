@@ -45,6 +45,7 @@ public class AHP {
 		alternatives = new LinkedList<Alternative>();
                 ranking = new LinkedList<Alternative>();
                 criteria = new LinkedList<Criterium>();
+                this.altsCriteriaValues = new LinkedList<SimpleMatrix>();
 			
 		BufferedReader br = null;
 		String line = "";
@@ -80,9 +81,8 @@ public class AHP {
                         }
                         
                      //second line of datafile
-                        br = new BufferedReader(new FileReader(filename));
         		line = br.readLine(); 
-                        if(line != null)    {
+                        if(line != null)    {                        
 				values = line.split(",");
                                 if(values.length==altsCount)  {
                                         for(int j = 0; j<altsCount; j++) {
@@ -106,17 +106,16 @@ public class AHP {
                         
                                                
                         for(int c=0; c<criteriaCount; c++)    {
-                            br = new BufferedReader(new FileReader(filename));
                             line = br.readLine(); 
                             if(line != null)    {
 				values = line.split(",");
                                 if(values.length==2)  {
                                     Criterium criterium = new Criterium(values[0]);
                                     
-                                    if(values[1]=="fixMatrix")  {
+                                    if(values[1].contentEquals("fixMatrix"))  {
                                         fixMatrix = true;
                                     }
-                                    else if(values[1]!="doNotFixMatrix") {
+                                    else if(values[1].contentEquals("doNotFixMatrix")) {
                                         fixMatrix = false;
                                     }
                                     else    {
@@ -136,7 +135,6 @@ public class AHP {
                             double[][] altsCriteriumValues = new double[altsCount][altsCount];
                             
                             for(int l=0; l<altsCount;l++) {
-                                br = new BufferedReader(new FileReader(filename));
                                 line = br.readLine(); 
                                 if(line != null)    {
                                     values = line.split(",");
@@ -157,15 +155,14 @@ public class AHP {
                                                        
                         }
                         
-                        br = new BufferedReader(new FileReader(filename));
                         line = br.readLine(); 
                         if(line != null)    {
                             values = line.split(",");
-                            if(values.length==2 && values[0]=="criteriaMatrix")  {                                  
-                                    if(values[1]=="fixMatrix")  {
+                            if(values.length==2 && values[0].contentEquals("criteriaMatrix"))  {  
+                                    if(values[1].contentEquals("fixMatrix"))  {
                                         fixMatrix = true;
                                     }
-                                    else if(values[1]!="doNotFixMatrix") {
+                                    else if(values[1].contentEquals("doNotFixMatrix")) {
                                         fixMatrix = false;
                                     }
                                     else    {
@@ -176,7 +173,6 @@ public class AHP {
                                     double[][] tmpCriteriaMatrix = new double[criteriaCount][criteriaCount];
                             
                                     for(int l=0; l<criteriaCount;l++) {
-                                        br = new BufferedReader(new FileReader(filename));
                                         line = br.readLine(); 
                                         if(line != null)    {
                                             values = line.split(",");

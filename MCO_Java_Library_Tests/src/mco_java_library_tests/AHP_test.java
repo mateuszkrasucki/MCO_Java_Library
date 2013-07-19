@@ -14,6 +14,48 @@ public class AHP_test {
     /**
      * @param args the command line arguments
      */
+    
+    public static void testFromFile()   {
+        AHP ahpTest = new AHP("/Users/mateuszkrasucki/Desktop/datafiles/ahp.csv");
+        
+        ahpTest.calculate();
+        
+        System.out.println(ahpTest.getCriteriumWeight(0));
+        System.out.println(ahpTest.getCriteriumWeight(1));
+        System.out.println(ahpTest.getCriteriumWeight(2));
+        
+        System.out.println();
+        
+        System.out.println(ahpTest.getAlternativeCriteriumValue(0, 0));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(0, 1));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(0, 2));
+        
+                System.out.println();
+        
+        System.out.println(ahpTest.getAlternativeCriteriumValue(1, 0));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(1, 1));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(1, 2));
+        
+                System.out.println();
+        
+        System.out.println(ahpTest.getAlternativeCriteriumValue(2, 0));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(2, 1));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(2, 2));
+        
+                System.out.println();
+        
+        System.out.println(ahpTest.getAlternativeCriteriumValue(3, 0));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(3, 1));
+        System.out.println(ahpTest.getAlternativeCriteriumValue(3, 2));
+        
+        
+        System.out.println();
+        
+        System.out.println(ahpTest.getAlternative(0).getName() + " " + ahpTest.getAlternativeValue(0));
+        System.out.println(ahpTest.getAlternative(1).getName() + " " + ahpTest.getAlternativeValue(1));
+        System.out.println(ahpTest.getAlternative(2).getName() + " " + ahpTest.getAlternativeValue(2));
+        System.out.println(ahpTest.getAlternative(3).getName() + " " + ahpTest.getAlternativeValue(3));
+    }
     public static void test()   {
 
 	double[][] style = {
@@ -68,6 +110,8 @@ public class AHP_test {
         ahpTest.addAltsCriteriumValues(style, false);
         ahpTest.addAltsCriteriumValues(reliability, false); 
         ahpTest.addAltsCriteriumValues(fuelEconomy, true);
+        
+        //AHP ahpTest = new AHP("/Users/mateuszkrasucki/Desktop/datafiles/ahp.csv");
         
         ahpTest.calculate();
         
