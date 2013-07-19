@@ -221,7 +221,6 @@ public class MAUT {
             }
             sum = sum + criteria.get(i).getWeight();
         }
-        System.out.println(sum);
         for(int i=0; i<criteria.size();i++) {
             criteria.get(i).setWeight(criteria.get(i).getWeight()/sum);
         }

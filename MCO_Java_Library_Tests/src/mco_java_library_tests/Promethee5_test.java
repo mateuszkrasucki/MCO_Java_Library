@@ -1,9 +1,6 @@
 package mco_java_library_tests;
 import java.util.LinkedList;
-import methods.Promethee.Promethee5;
-import methods.Promethee.Alternative;
-import methods.Promethee.Constraint;
-import methods.Promethee.Criterium;
+import methods.Promethee.*;
 
 
 /**
@@ -15,34 +12,30 @@ public class Promethee5_test {
     public static void test()   {
         
         Promethee5 promethee = new Promethee5(4);
+        
         Criterium c1 = new Criterium();
         c1.setWeight(1.0/7.0);
         c1.setDirection(Criterium.Direction.MIN);
-        c1.setQ(0.05);
-        c1.setP(0.2);
+        c1.setPreferenceFunction(new LinearPreferenceFunction(0.05,0.2));
         c1.setName("c1");
         
         Criterium c2 = new Criterium();
         c2.setWeight(1.0/7.0);
         c2.setDirection(Criterium.Direction.MIN);
-        c2.setQ(0.05);
-        c2.setP(0.2);
+        c2.setPreferenceFunction(new LinearPreferenceFunction(0.05,0.2));
         c2.setName("c2");
         
         Criterium c3 = new Criterium();
         c3.setWeight(1.0/7.0);
         c3.setDirection(Criterium.Direction.MAX);
-        c3.setQ(0.05);
-        c3.setP(0.2);
+        c3.setPreferenceFunction(new LinearPreferenceFunction(0.05,0.2));
         c3.setName("c3");
         
         Criterium c4 = new Criterium();
         c4.setWeight(40/7.0);
         c4.setDirection(Criterium.Direction.MAX);
-        c4.setQ(0.05);
-        c4.setP(0.2);
+        c4.setPreferenceFunction(new LinearPreferenceFunction(0.05,0.2));
         c4.setName("c4");
-        
         promethee.addCriterium(c1);
         promethee.addCriterium(c2);
         promethee.addCriterium(c3);
@@ -83,7 +76,7 @@ public class Promethee5_test {
         
         Constraint constraint1 = new Constraint(c1,Constraint.ConstrainType.UPPER,65.0);
         promethee.addConstraint(constraint1);
-        promethee.calculatePromethee5();
+        promethee.calculate();
         
          for(int i=0; i<promethee.getAlternatives().size(); i++)  {
             System.out.print(promethee.getAlternative(i).getId());

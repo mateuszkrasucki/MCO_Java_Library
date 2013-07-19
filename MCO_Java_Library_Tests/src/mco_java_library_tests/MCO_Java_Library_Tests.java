@@ -15,7 +15,8 @@ public class MCO_Java_Library_Tests {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MAUT_test.testFromFile();
+        //MAUT_test.testFromFile();
+        Promethee2_test.test();
     }
 }
 

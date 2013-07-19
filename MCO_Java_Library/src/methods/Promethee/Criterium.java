@@ -11,66 +11,47 @@ public class Criterium extends methods.BasicTypes.Criterium {
 	}
 	private Criterium.Direction direction;    
         
-        private double q; //indifference threshold
-        private double p; //absolute preference threshold
+        public enum PreferenceFunctionType {
+            LINEAR, THRESHOLD, LEVEL, GAUSSIAN
+        }
+        private PreferenceFunction preferenceFunction;
         
         public Criterium() {
 		super();
                 this.direction = Direction.MAX;
-                this.q = 0;
-                this.p = 0;
+                preferenceFunction = new LinearPreferenceFunction();
 	}
         
         public Criterium(String name) {
 		super(name);
                 this.direction = Direction.MAX;
-                this.q = 0;
-                this.p = 0;
+                preferenceFunction = new LinearPreferenceFunction();
 	}
         
         public Criterium(String name, double weight) {
 		super(name, weight);
                 this.direction = Direction.MAX;
-                this.q = 0;
-                this.p = 0;
+                preferenceFunction = new LinearPreferenceFunction();
 	}        
         
         public Criterium(String name, Criterium.Direction direction) {
 		super(name);
 		this.direction = direction;
-                this.q = 0;
-                this.p = 0;
+                preferenceFunction = new LinearPreferenceFunction();
         }
         
         public Criterium(String name, Criterium.Direction direction, double weight) {
 		super(name, weight);
 		this.direction = direction;
-                this.q = 0;
-                this.p = 0;
+                preferenceFunction = new LinearPreferenceFunction();
         }
                 
-        public Criterium(String name, Criterium.Direction direction, double weight, double p, double q) {
+        public Criterium(String name, Criterium.Direction direction, double weight, PreferenceFunction preferenceFunction) {
 		super(name, weight);
                 this.direction = direction;
-                this.p = p;
-                this.q = q;
+                this.preferenceFunction = preferenceFunction;
         }
 
-        public double getQ() {
-            return q;
-        }
-
-        public void setQ(double q) {
-            this.q = q;
-        }
-
-        public double getP() {
-            return p;
-        }
-
-        public void setP(double p) {
-            this.p = p;
-        }
         
     public Direction getDirection() {
         return direction;
@@ -79,5 +60,17 @@ public class Criterium extends methods.BasicTypes.Criterium {
     public void setDirection(Direction direction) {
         this.direction = direction;
     }   
+
+    public PreferenceFunction getPreferenceFunction() {
+        return preferenceFunction;
+    }
+
+    public void setPreferenceFunction(PreferenceFunction preferenceFunction) {
+        this.preferenceFunction = preferenceFunction;
+    }
+    
+    public double calculatePreference(double value1, double value2) {
+        return preferenceFunction.calculatePreference(value1, value2, this.direction);
+    }
          
 }

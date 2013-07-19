@@ -45,14 +45,18 @@ public class Promethee1 {
     }
     
     
-    public void calculate()  {
-        double sumWeight = 0;
-                for(int i=0; i<criteriaNum_; i++)   {
-            sumWeight = sumWeight + criteria.get(i).getWeight();
+    public void normalizeWeights()  {
+        double sum = 0;
+        for(int i=0; i<criteria.size();i++) {
+            sum = sum + criteria.get(i).getWeight();
         }
-        for(int i=0; i<criteriaNum_; i++)   {
-            criteria.get(i).setWeight(criteria.get(i).getWeight()/sumWeight);
+        for(int i=0; i<criteria.size();i++) {
+            criteria.get(i).setWeight(criteria.get(i).getWeight()/sum);
         }
+    }   
+    
+    public void calculate()  { 
+        normalizeWeights();
         
         ranking = new LinkedList<Alternative>(alternatives);
         calculateMPD();     
@@ -99,25 +103,7 @@ public class Promethee1 {
             for(int j=0; j<alternativesNum_; j++)    {
                 if(i!=j)    {
                     for(int r=0; r<criteriaNum_; r++)    {
-                        double d = 0;
-                        double pd = 0;
-                        // wyznaczenie roznicy miedzy wartosciami kryterium r w alternatywie i i alternatywie j (z uwzglednieniem kierunku preferencji)
-                        if(criteria.get(r).getDirection()  == Criterium.Direction.MAX)    {
-                            d = alternatives.get(i).getCriteriumValue(r) - alternatives.get(j).getCriteriumValue(r);
-                        }
-                        else if(criteria.get(r).getDirection() == Criterium.Direction.MIN)    {
-                            d = -1 * (alternatives.get(i).getCriteriumValue(r) - alternatives.get(j).getCriteriumValue(r));
-                        }
-                        
-                        if(d<=criteria.get(r).getQ())    {
-                            pd = 0; // jesli roznica jest mniejsza lub rowna progowi obojetnosci dla kryterium r wartosc relacji preferencji = 0
-                        }
-                        else if(d<=criteria.get(r).getP())    {
-                            pd = (d - criteria.get(r).getQ())/(criteria.get(r).getP()-criteria.get(r).getQ()); // jesli roznica jest wieksza od progu obojetnosci i mniejsza lub rĂłwna progowi scislej preferencji dla kryterium r wyznacz na podstawie funkcji liniowej wartosc relacji preferencji
-                        }
-                        else    {
-                            pd = 1; // jesli roznica jest wieksza od progu scislej preferencji dla kryterium r wartosc relacji preferencji = 1
-                        }
+                        double pd = criteria.get(r).calculatePreference(alternatives.get(i).getCriteriumValue(r), alternatives.get(j).getCriteriumValue(r));
                         mpd.set(i, j, mpd.get(i, j) + criteria.get(r).getWeight() * pd);
                     }
                 }
