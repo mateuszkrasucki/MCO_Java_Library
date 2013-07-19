@@ -11,9 +11,6 @@ public class Criterium extends methods.BasicTypes.Criterium {
 	}
 	private Criterium.Direction direction;    
         
-        public enum PreferenceFunctionType {
-            LINEAR, THRESHOLD, LEVEL, GAUSSIAN
-        }
         private PreferenceFunction preferenceFunction;
         
         public Criterium() {

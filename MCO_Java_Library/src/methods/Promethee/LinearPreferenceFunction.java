@@ -6,9 +6,10 @@ package methods.Promethee;
  * @author Mateusz Krasucki
  */
 public class LinearPreferenceFunction implements PreferenceFunction {
-        
-    private double p;
+    
     private double q;
+    private double p;
+    
     
     public LinearPreferenceFunction()   {
         this.q=0;

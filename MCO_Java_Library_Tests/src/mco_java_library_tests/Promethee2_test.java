@@ -7,8 +7,25 @@ import methods.Promethee.*;
  * @author Mateusz Krasucki
  */
 public class Promethee2_test {
+    
+    public static void testFromFile()   {
+        Promethee2 promethee = new Promethee2("/Users/mateuszkrasucki/Desktop/datafiles/promethee.csv");
+        promethee.calculate();
+        
+         for(int i=0; i<promethee.getRanking().size(); i++)  {
+            System.out.print(promethee.getAlternativeByRank(i).getId());
+            System.out.print(". ");
+            System.out.print(promethee.getAlternativeByRank(i).getName());
+            System.out.print(" ");
+            System.out.println(promethee.getAlternativeByRank(i).getMpfPlus());
+            System.out.print(" ");
+            System.out.print(promethee.getAlternativeByRank(i).getMpfMinus());
+            System.out.print(" ");
+            System.out.println(promethee.getAlternativeByRank(i).getMpf());
+        }  
+    }
     public static void test()   {
-        Promethee2 promethee = new Promethee2(4);
+        Promethee2 promethee = new Promethee2();
         
         Criterium c1 = new Criterium();
         c1.setWeight(1.0/7.0);

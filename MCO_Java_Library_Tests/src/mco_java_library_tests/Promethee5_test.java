@@ -9,9 +9,31 @@ import methods.Promethee.*;
  */
 public class Promethee5_test {
     
+    public static void testFromFile()   {
+        Promethee5 promethee = new Promethee5("/Users/mateuszkrasucki/Desktop/datafiles/promethee.csv");
+        promethee.calculate();
+        
+         for(int i=0; i<promethee.getAlternatives().size(); i++)  {
+            System.out.print(promethee.getAlternative(i).getId());
+            System.out.print(". ");
+            System.out.print(promethee.getAlternative(i).getName());
+            System.out.print(" ");
+            System.out.println(promethee.getAlternative(i).getMpfPlus());
+            System.out.print(" ");
+            System.out.print(promethee.getAlternative(i).getMpfMinus());
+            System.out.print(" ");
+            System.out.println(promethee.getAlternative(i).getMpf());
+        }       
+        
+        for(int i=0; i<promethee.getAlternativesBestSet().size(); i++)   {
+            System.out.println(promethee.getAlternativesBestSet().get(i).getName() + " " + promethee.getAlternativesBestSet().get(i).getMpf());
+        }
+        System.out.println(promethee.getBestSetMPF());        
+    }
+    
     public static void test()   {
         
-        Promethee5 promethee = new Promethee5(4);
+        Promethee5 promethee = new Promethee5();
         
         Criterium c1 = new Criterium();
         c1.setWeight(1.0/7.0);
@@ -74,7 +96,7 @@ public class Promethee5_test {
         promethee.addAlternative(car3);
         promethee.addAlternative(car4);    
         
-        Constraint constraint1 = new Constraint(c1,Constraint.ConstrainType.UPPER,65.0);
+        Constraint constraint1 = new Constraint(c1,Constraint.ConstrainType.UPPER,85.0);
         promethee.addConstraint(constraint1);
         promethee.calculate();
         

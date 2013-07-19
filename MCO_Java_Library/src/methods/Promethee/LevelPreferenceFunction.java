@@ -6,9 +6,10 @@ package methods.Promethee;
  * @author Mateusz Krasucki
  */
 public class LevelPreferenceFunction implements PreferenceFunction {
-        
-    private double p;
+    
     private double q;
+    private double p;
+    
     
     public LevelPreferenceFunction()   {
         this.q=0;

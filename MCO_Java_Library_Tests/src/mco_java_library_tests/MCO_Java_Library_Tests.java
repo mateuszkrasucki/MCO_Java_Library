@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package mco_java_library_tests;
 
 
@@ -16,7 +12,9 @@ public class MCO_Java_Library_Tests {
      */
     public static void main(String[] args) {
         //MAUT_test.testFromFile();
-        Promethee2_test.test();
+        Promethee2_test.testFromFile();
+        System.out.println();
+        Promethee5_test.testFromFile();
     }
 }
 
