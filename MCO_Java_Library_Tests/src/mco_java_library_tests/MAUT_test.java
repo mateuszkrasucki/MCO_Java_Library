@@ -30,6 +30,18 @@ public class MAUT_test {
         }
     }
     
+    public static void testFromFile()   {
+        MAUT maut_test = new MAUT("/Users/mateuszkrasucki/Desktop/datafiles/maut.csv");
+        maut_test.calculate();
+        
+        showCriteria(maut_test);
+        
+        for(int i=0; i<maut_test.getAlternatives().size(); i++)  {
+            System.out.println(maut_test.getAlternatives().get(i).getName() + " " + maut_test.getAlternatives().get(i).getScore());
+        }
+        
+    }
+    
     public static void test()  {
         MAUT maut_test = new MAUT();
         

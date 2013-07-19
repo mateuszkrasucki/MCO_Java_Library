@@ -255,7 +255,6 @@ public class AHP {
                     System.out.println("Criteria pairwise comparison matrix is not square or size is not correct");
 	}
         
-        
 	public void addAltsCriteriumValues(double[][] rawAltsCriteriumValues, boolean fixMatrix) {
                 SimpleMatrix altsCriteriumValues = new SimpleMatrix(rawAltsCriteriumValues);
 		if (alternatives.size() == altsCriteriumValues.numRows() && alternatives.size() == altsCriteriumValues.numCols())   {
