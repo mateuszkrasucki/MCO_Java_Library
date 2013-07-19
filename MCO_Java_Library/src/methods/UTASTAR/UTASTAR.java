@@ -1,12 +1,18 @@
 package methods.UTASTAR;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 /**
  *
- * @author Mateusz Krasucki, adaptation of class created by Andreadis Pavlos
+ * @author Mateusz Krasucki, based on UTASTARinjava created by Andreadis Pavlos
  */
 public class UTASTAR {
     private LinkedList<Criterium> criteria;
@@ -103,6 +109,93 @@ public class UTASTAR {
                  this.epsilon = epsilon;          
      }
     
+    public UTASTAR(String filename, double preferenceThreshold, double epsilon) {
+        this(filename);
+        this.preferenceThreshold = preferenceThreshold;
+        this.epsilon = epsilon;   
+    }
+    
+    public UTASTAR(String filename) {
+                this.criteria = new LinkedList<Criterium>();
+                this.referenceAlternatives = new LinkedList<Alternative>();
+                this.alternatives = new LinkedList<Alternative>();
+                this.referenceAlternativesRanking = new LinkedList<Alternative>();
+                this.ranking = new LinkedList<Alternative>();
+                this.preferenceThreshold = 0.05;
+                this.epsilon = 0.00001;             
+			
+		BufferedReader br = null;
+		String line = "";
+		int refAltsCount = 0;
+                int altsCount = 0;
+                int refAltsIterationCount = 0;
+                int altsIterationCount = 0;
+                int criteriaCount = 0;
+                
+                String[] values;
+		
+		try {
+                    br = new BufferedReader(new FileReader(filename));
+                    line = br.readLine(); 
+                    while(line != null)    {
+                        values = line.split(",");
+                        if(values[0].contentEquals("Criterium") && values.length>=3 && altsCount == 0)   {
+                                    Criterium criterium = new Criterium(values[1]);
+                                    for(int i = 2; i<values.length; i++)    {
+                                        criterium.addMufArg(Double.parseDouble(values[i]));
+                                    }
+                                    this.addCriterium(criterium);
+                                    criteriaCount++;
+                        }
+                        else if (values[0].contentEquals("ReferenceAlternatives") && refAltsCount == 0 && altsCount == 0 && criteriaCount != 0)   {                          
+                            for(int i=1; i<values.length;i++)   {
+                                Alternative alternative = new Alternative(values[i]);
+                                this.addReferenceAlternative(alternative);
+                                refAltsCount++;
+                            }
+                        } 
+                        else if (values[0].contentEquals("PreferenceStandings") && refAltsCount != 0 && values.length == refAltsCount+1 && altsCount == 0 && criteriaCount != 0)   {                          
+                            for(int i=1; i<values.length;i++)   {
+                                this.getReferenceAlternative(i-1).setPreferenceStanding(Integer.parseInt(values[i]));
+                            }
+                        } 
+                        else if(refAltsCount !=0 && altsCount==0 && criteriaCount!=0 && refAltsIterationCount < refAltsCount && values.length == criteriaCount)   {
+                            for(int i=0; i<values.length; i++)  {
+                                this.getReferenceAlternative(refAltsIterationCount).addCriteriumValue(Double.parseDouble(values[i]));
+                            }
+                            refAltsIterationCount++;
+                        }
+                        else if (values[0].contentEquals("Alternatives") && refAltsCount != 0 && altsCount == 0 && criteriaCount != 0)   {                          
+                            for(int i=1; i<values.length;i++)   {
+                                Alternative alternative = new Alternative(values[i]);
+                                this.addAlternative(alternative);
+                                altsCount++;
+                            }
+                        } 
+                        else if(refAltsCount !=0 && altsCount!=0 && criteriaCount!=0 && altsIterationCount < altsCount && values.length == criteriaCount)   {
+                            for(int i=0; i<values.length; i++)  {
+                                this.getAlternative(altsIterationCount).addCriteriumValue(Double.parseDouble(values[i]));
+                            }
+                            altsIterationCount++;
+                        }
+                        else    {
+                            throw new Exception("Wrong file format");
+                        }
+                        line = br.readLine(); 
+                    }
+                   
+                    br.close();
+                }
+                catch (FileNotFoundException e) {
+        			e.printStackTrace();
+		}
+		catch (IOException e) {
+				e.printStackTrace();
+				
+                } catch (Exception e) {
+        			e.printStackTrace();
+		}       					
+    }
    
     private void createValueFunctionsOfU()   {
         int i, j, k;
@@ -181,18 +274,6 @@ public class UTASTAR {
           valueFunctionsOfU[j][slot][valueIndex] = tempVector[slot][valueIndex];
          }
         }
-
-        /*for (i = 0; i < this.getReferenceAlternativesNum(); i++)
-        {
-          System.out.println("----- value function of U -----");
-          for (k = 0; k < valueFunctionsOfU[i].length; k++)
-          {
-              System.out.print(" - " + valueFunctionsOfU[i][k][0] + " - ");
-              System.out.print(" - " + valueFunctionsOfU[i][k][1] + " - ");
-              System.out.println(" - " + valueFunctionsOfU[i][k][2] + " - ");
-          }
-          System.out.println("");
-        }*/
     }
     
  
@@ -224,17 +305,6 @@ public class UTASTAR {
       }
      }
 
-     /*for(j = 0; j < this.getReferenceAlternativesNum(); j++)
-     {
-       System.out.println("");
-       System.out.println("----- value function of W ------");
-       for(i = 0; i < this.getCriteriaNum(); i++)
-       {
-           for(k = 0; k < valueFunctionsOfW[j][i].length; k++)
-               System.out.print(" - "+valueFunctionsOfW[j][i][k]+" - ");
-           System.out.println("");
-       }
-     }*/
     }
 
     private void createDeltaValueFunctions(){
@@ -255,17 +325,6 @@ public class UTASTAR {
        for(k = 0; k < deltaValueFunctions[j][i].length; k++)
         deltaValueFunctions[j][i][k] = valueFunctionsOfW[j][i][k] - valueFunctionsOfW[j+1][i][k];
 
-     /*for(j = 0; j < this.getReferenceAlternativesNum()-1; j++)
-     {
-       System.out.println("");
-       System.out.println("-----------");
-       for(i = 0; i < this.getCriteriaNum(); i++)
-       {
-           System.out.println("");
-           for(k = 0; k < deltaValueFunctions[j][i].length; k++)
-               System.out.print(" _ "+deltaValueFunctions[j][i][k]+" _ ");
-       }
-     }*/
     }   
     
     private void createSimplexTable(){
@@ -482,11 +541,6 @@ public class UTASTAR {
           standardSolution = standardForm.solve();
           averageWeightMatrix = new double[this.getCriteriaNum()][];
 
-    //      String so = "[";
-    //      for(i = 0; i < standardSolution.length; i++)
-    //            so += " " + standardSolution[i];
-    //      so += "]";
-    //      System.out.print("\n" + "Standard Solution: \n" + so);
 
           alternateForms = new SimplexTable[this.getCriteriaNum()] ;
           sensitivityAnalysis = new double[this.getCriteriaNum()][] ;
@@ -577,7 +631,8 @@ public class UTASTAR {
             });
         }
         catch(Exception e)  {
-            System.out.println("Something is wrong. Probably you did not add referenceAlternatives or there errors in data");
+            e.printStackTrace();
+            System.out.println("Something went wrong. Probably you did not add referenceAlternatives or there are some errors in data.");
         }
             
       }
@@ -697,7 +752,7 @@ public class UTASTAR {
 
     public double[][] getAverageWeightMatrix() {
         if(this.averageWeightMatrix == null)    {
-            throw new IndexOutOfBoundsException("Averafe Weight Matrix is not calculated.");
+            throw new IndexOutOfBoundsException("Average Weight Matrix is not calculated.");
         }
         return averageWeightMatrix;
     }
