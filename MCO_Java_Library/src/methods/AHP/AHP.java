@@ -11,8 +11,8 @@ import org.ejml.simple.SimpleMatrix;
 import org.ejml.simple.SimpleEVD;
 
 /**
- *
- * @author Gabriela Pastuszka, Mateusz Krasucki
+ * AHP (Analytic Hierarchy Process) method class. 
+ * @author Mateusz Krasucki, Gabriela Pastuszka
  */
 public class AHP {
         private LinkedList<Criterium> criteria;
@@ -23,21 +23,20 @@ public class AHP {
 	
 	private SimpleMatrix criteriaMatrix; // criteria importance pairwaise comparisons matrix      
         
-        private double epsilon;
+        private double epsilon; // stop condition for eigenvectors calcualtions.
               
         
         private boolean calculated_;
         
         //results:
-        private SimpleMatrix criteriaWeights; // eigenvector
-        private SimpleMatrix alternativesCriteriaValues; // matrix of eigenvectors
-        private SimpleMatrix alternativesValues; // results
+        private SimpleMatrix criteriaWeights; // computed as eigenvector of criteriaMatrix
+        private SimpleMatrix alternativesCriteriaValues; // computed as eigenvector of subsequent altsCriteriaValues matrices.
+        private SimpleMatrix alternativesValues; // final results.
         
         /**
-	* 
-	* Cosntructor with data read from file
-	* @param filename Filename where data can be read from. It should be structured as csv file in dataFileExamples/ahp.csv
-        * In the first line there should be epsilon value followed by criteria number and alternatives number. In the second line you should place alternatives' names. 
+	* AHP class constructor with data file as an parameter. 
+	* @param filename Path to the file from which data can be read. 
+        * It should be structured as csv file in dataFileExamples/ahp.csv. In the first line there should be epsilon value followed by criteria number and alternatives number. In the second line you should place alternatives' names. 
         * Starting from third line there is place for criteria name and fixing matrix flag (fixMatrix or doNotFixMatrix) followed by alternatives' criterium pariwaise comparisons values matrix.
         * At the end of the data file there should be criteriaMatrix (criteria pairwaise comparison matrix) with fixing matrix flag. It has to be preceded by line with "criteriaMatrix,fixMatrix" or "criteriaMatrix,doNotFixMatrix".
 	*/
@@ -216,15 +215,28 @@ public class AHP {
 	
         
 
-	public AHP() {
+    /**
+     * Basic AHP class constructor.
+     * The AHP object created by this constructor is empty. Epsilon parameter value is set to default (0.0001).
+     */
+    public AHP() {
                 this.criteria = new LinkedList<Criterium>();
                 this.alternatives = new LinkedList<Alternative>();
 		this.altsCriteriaValues = new LinkedList<SimpleMatrix>();
                 this.epsilon = 0.0001;
                 this.calculated_ = false;
-	}
+    }
         
-        public AHP(LinkedList<Criterium> criteria, LinkedList<Alternative> alternatives, LinkedList<SimpleMatrix> altsCriteriaValues, SimpleMatrix criteriaValues, double epsilon) {
+     /**
+     * AHP class constructor with all the important data as paramaters.
+     * @param criteria LinkedList object containing Criterium objects which represent criteria in MCO problem. 
+     * @param alternatives LinkedList object containing Alternatice objects which represent alternatives in MCO problem.
+     * @param altsCriteriaValues LinkedList object containing SimpleMatrix objects. Each of those SimpleMatrix objects represents pairwise compar
+     * ison value of two alternatives for each criterium. E.g. value(alt1,alt2) = 2.0 for first criterium means that alternative alt1 is twice as better as alternative alt2 according in terms of this criterium according to decision maker.
+     * @param criteriaMatrix SimpleMatrix object containing criteria imporance pairwise comparison. E.g. criteriaMatrix(c1,c2) = 2.0 means that criterium c1 is twice as important as criterium c2 according to decision maker.
+     * @param epsilon Stop condition for eigenvector calculation.
+     */
+    public AHP(LinkedList<Criterium> criteria, LinkedList<Alternative> alternatives, LinkedList<SimpleMatrix> altsCriteriaValues, SimpleMatrix criteriaMatrix, double epsilon) {
                 this.criteria = criteria;
                 this.alternatives = alternatives;
 		this.altsCriteriaValues = altsCriteriaValues;
@@ -233,16 +245,29 @@ public class AHP {
                 calculated_ = false;
 	}
                 
-        public void addAlternative(Alternative alternative)   {
-            alternative.setId(alternatives.size()+1);
+     /**
+     * Adds alternative to AHP object.
+     * @param alternative Alternative object.
+     */
+    public void addAlternative(Alternative alternative)   {
+            alternative.setId(alternatives.size());
             alternatives.add(alternative);
         }
         
-        public void addCriterium(Criterium criterium)   {
+     /**
+     * Adds criterium to AHP object.
+     * @param criterium Criterium object.
+     */
+    public void addCriterium(Criterium criterium)   {
             criteria.add(criterium);
         }
         
-        public void setCriteriaMatrix(double[][] tmpCriteriaMatrix, boolean fixMatrix) {
+     /**
+     * Sets AHP object criteriaMatrix to the one specified as parameter.
+     * @param tmpCriteriaMatrix Two dimensional double array ontaining criteria imporance pairwise comparison. E.g. criteriaMatrix(c1,c2) = 2.0 means that criterium c1 is twice as important as criterium c2 according to decision maker.
+     * @param fixMatrix Boolean flag allowing to run automatically run method whick adapts criteriaMatrix to AHP method requirements: M(i,i) = 1, if i < j M(i,j) = tmpCriteriaMatrix(i,j) and if j<i M(i,j) = 1/tmpCriteriaMatrix(j,i).	
+     */
+    public void setCriteriaMatrix(double[][] tmpCriteriaMatrix, boolean fixMatrix) {
          
                 SimpleMatrix criteriaMatrix = new SimpleMatrix(tmpCriteriaMatrix);
 		if (this.criteria.size() == criteriaMatrix.numRows() && this.criteria.size() == criteriaMatrix.numCols())   {
@@ -255,7 +280,12 @@ public class AHP {
                     System.out.println("Criteria pairwise comparison matrix is not square or size is not correct");
 	}
         
-	public void addAltsCriteriumValues(double[][] rawAltsCriteriumValues, boolean fixMatrix) {
+	/**
+     * Adds pairwise comparson matrix of two alternatives for specific criterium. AltsCriteriumValues has to be added in the same as order as respective criteria are added.
+     * @param rawAltsCriteriumValues Two dimensional double array representing pairwise comparison value of two alternatives for specific criterium. E.g. value(alt1,alt2) = 2.0 for first criterium means that alternative alt1 is twice as better as alternative alt2 according in terms of this criterium according to decision maker.
+     * @param fixMatrix Boolean flag allowing to run automatically run method whick adapts altsCriteriumValuesMatrix to AHP method requirements: M(i,i) = 1, if i < j M(i,j) = tmpCriteriaMatrix(i,j) and if j<i M(i,j) = 1/tmpCriteriaMatrix(j,i).	
+     */
+    public void addAltsCriteriumValues(double[][] rawAltsCriteriumValues, boolean fixMatrix) {
                 SimpleMatrix altsCriteriumValues = new SimpleMatrix(rawAltsCriteriumValues);
 		if (alternatives.size() == altsCriteriumValues.numRows() && alternatives.size() == altsCriteriumValues.numCols())   {
                     if(alternatives.size() == altsCriteriumValues.numRows())   {
@@ -271,11 +301,18 @@ public class AHP {
                     System.out.println("Matrix is not square.");
 	}
        
-        public void setEpsilon(double epsilon)  {
+        /**
+     * Sets epsilon value.
+     * @param epsilon epsilon Stop condition for eigenvector calculation.
+     */
+    public void setEpsilon(double epsilon)  {
             this.epsilon = epsilon; 
         }
         
-        public void calculate() {
+      /**
+     * Performs AHP method calculations on data added to AHP object.
+     */
+    public void calculate() {
             criteriaWeights = calculateEigenVector(criteriaMatrix);
             
             for(int i=0; i<criteria.size(); i++)    {
@@ -318,7 +355,12 @@ public class AHP {
         }
         
 	
-	protected SimpleMatrix fixMatrix(SimpleMatrix matrix) {
+	/**
+     * Adapts matrix to AHP method requirements. M(i,i) = 1, if i < j M(i,j) = tmpCriteriaMatrix(i,j) and if j<i M(i,j) = 1/tmpCriteriaMatrix(j,i).
+     * @param matrix Simple matrix object which will be adapted to AHP method requirements.
+     * @return Adapted SimpleMatrix object.
+     */
+    protected SimpleMatrix fixMatrix(SimpleMatrix matrix) {
 		SimpleMatrix blank = new SimpleMatrix(matrix.numRows(), matrix.numCols());
 		for (int i=0; i<matrix.numRows(); i++)
 			for (int j=0; j<matrix.numCols(); j++) {
@@ -363,88 +405,164 @@ public class AHP {
 	}
         
    
-        public LinkedList<Criterium> getCriteria() {
+      /**
+     * Returns all the criteria stored in AHP object.
+     * @return LinkedList containing Criterium objects.
+     */
+    public LinkedList<Criterium> getCriteria() {
             return criteria;
         }
 
-        public Criterium getCriterium(int i)    {
+      /**
+     * Returns Criterium with the i order number. 
+     * @param i Criterium order number.
+     * @return Criterium object.
+     */
+    public Criterium getCriterium(int i)    {
             return criteria.get(i);
         }
 
-        public void setCriteria(LinkedList<Criterium> criteria) {
+        /**
+     * Sets criteria in AHP object to LinkedList provided as parameter.
+     * @param criteria LinkedList object containing Criterium objects.
+     */
+    public void setCriteria(LinkedList<Criterium> criteria) {
             this.criteria = criteria;
         }
 
-        public LinkedList<Alternative> getAlternatives() {
+        /**
+    * Return all the alternatives stored in AHP object.
+     * @return LinkedList containing Alternative objects.
+     */
+    public LinkedList<Alternative> getAlternatives() {
             return alternatives;
         }
 
-        public Alternative getAlternative(int i)    {
+        /**
+     * Returns Alternative with the i order number.
+     * @param i Alternative order number.
+     * @return Alternative object.
+     */
+    public Alternative getAlternative(int i)    {
             return alternatives.get(i);
         }
 
-        public void setAlternatives(LinkedList<Alternative> alternatives) {
+        /**
+     * Sets alternatives in AHP object to LinkedList provided as parameter.
+     * @param alternatives LinkedList object containing Alternative objects.
+     */
+    public void setAlternatives(LinkedList<Alternative> alternatives) {
             this.alternatives = alternatives;
         }
 
-        public LinkedList<Alternative> getRanking() {
+        /**
+     * Returns ranking - all the alternatives in AHP object ordered by their score calculated by AHP method. 
+     * @return LinkedList object containing Alternative objects ordered by their AHP score. 
+     */
+    public LinkedList<Alternative> getRanking() {
             return ranking;
         }
 
-        public double getAlternativeValue(int i)    {
+        /**
+     * Returns AHP score of i-th alternative.
+     * @param i Alternative order number.
+     * @return i-th alternative AHP score.
+     */
+    public double getAlternativeValue(int i)    {
             if(i<alternatives.size())   {
                 return alternatives.get(i).getScore();
             }
             return 0;
         }
 
-        public double getAlternativeValue(Alternative alt)    {
+        /**
+     * Returns AHP score of alternative alt. It has to be one of the alternatives added to the object before running calculate() method.
+     * @param alt Alternative object.
+     * @return AHP score of alternative object.
+     */
+    public double getAlternativeValue(Alternative alt)    {
             return alt.getScore();
         }        
     
-        public SimpleMatrix getAlternativesValues() {
+        /**
+     * Returns SimpleMatrix containing AHP values of all the alternatives in AHP object.
+     * @return SimpleMatrix object that contains AHP values of all the alternatives in AHP object.
+     */
+    public SimpleMatrix getAlternativesValues() {
                 if(calculated_) {
                     return alternativesValues;
                 }
                 return new SimpleMatrix(0,0);
 	}
                 
-        public SimpleMatrix getAlternativesCriteriaValues() {
+        /**
+     * Returns SimpleMatrix object containing the relative value of each alternative under each criterium calculated by AHP method.
+     * @return  SimpleMatrix object containing the relative value of each alternative under each criterium calculated by AHP method.
+     */
+    public SimpleMatrix getAlternativesCriteriaValues() {
                 if(calculated_) {
                     return alternativesCriteriaValues;
                 }
                 return new SimpleMatrix(0,0);
 	}
         
-        public double getAlternativeCriteriumValue (int alternativeNum, int criterumNum)    {
+        /**
+     * Returns the relative value of alternativeNum-th alternative under criteriumNum-th criterium.
+     * @param alternativeNum Order number of alternative.
+     * @param criterumNum Order number of criterium.
+     * @return The relative value of alternativeNum-th alternative under criteriumNum-th criterium.
+     */
+    public double getAlternativeCriteriumValue (int alternativeNum, int criterumNum)    {
                 if(calculated_) {
                     return alternativesCriteriaValues.get(alternativeNum, criterumNum);
                 }
                 return 0.0; 
         }
         
-        public SimpleMatrix getCriteriaWeights() {
+        /**
+     * Returns SimpleMatrix object containing weight of each criterium calculated by AHP method.
+     * @return SimpleMatrix object containing weight of each criterium calculated by AHP method.
+     */
+    public SimpleMatrix getCriteriaWeights() {
                 if(calculated_) {
                     return criteriaWeights;
                 }
                 return new SimpleMatrix(0,0);
 	}
         
-        public double getCriteriumWeight(int criterumNum)    {
+        /**
+     * Returns weight of criteriaNum-th criterium calculated by AHP method.
+     * @param criterumNum Order number of criterium.
+     * @return Weight of criteriaNum-th criterium calculated by AHP method.
+     */
+    public double getCriteriumWeight(int criterumNum)    {
                 if(calculated_) {
                     return criteria.get(criterumNum).getWeight();
                 }
                 return 0.0; 
         }
         
+    /**
+     * Returns alternative with specific rank in ranking calculated by AHP method.
+     * @param rank Rank number of wanted alternative. 
+     * @return Alternative object of alternative with wanted rank.
+     */
     public Alternative getAlternativeByRank(int rank)    {
         return ranking.get(rank);
     }        
     
+    /**
+     * Returns number of criteria in AHP object.
+     * @return Number of criteria in AHP object.
+     */
     public int getCriteriaNum() {
         return this.criteria.size();
     }
     
+    /**
+     * Returns number of criteria in AHP object.
+     * @return Number of criteria in AHP object.
+     */
     public int getAlternativesNum() {
         return this.alternatives.size();
     }

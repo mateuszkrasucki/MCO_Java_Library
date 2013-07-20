@@ -71,7 +71,7 @@ public class Promethee5 extends Promethee{
                 if(constraint.getConstraintType() == Constraint.ConstrainType.UPPER)  {
                     ex.upper(BigDecimal.valueOf(constraint.getValue()));
                 }
-                else if(constraint.getConstraintType() == Constraint.ConstrainType.LOWER)  {
+                else if(constraint.getConstraintType() == Constraint.ConstrainType.BOTTOM)  {
                     ex.lower(BigDecimal.valueOf(constraint.getValue()));
                 }
             }

@@ -123,7 +123,7 @@ public abstract class Promethee {
                                             this.addConstraint(constraint);
                                         }
                                         else if(values[2].contentEquals("LOWER"))   {
-                                            Constraint constraint = new Constraint(criterium, Constraint.ConstrainType.LOWER, Double.parseDouble(values[3]));
+                                            Constraint constraint = new Constraint(criterium, Constraint.ConstrainType.BOTTOM, Double.parseDouble(values[3]));
                                             this.addConstraint(constraint);
                                         }
                                         else    {

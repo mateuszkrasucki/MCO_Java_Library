@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 /**
- *
+ * MAUT (Multi-Attribute Utility Theory) method class. 
  * @author Mateusz Krasucki
  */
 public class MAUT {
@@ -24,9 +24,9 @@ public class MAUT {
        
     
         /**
-	* 
-	* Cosntructor with data read from file
-	* @param filename Filename where data can be read from. It should be structured as shown in example csv file in dataFileExamples/maut.csv
+	* MAUT class constructor with data file as an parameter. 
+	* @param filename Path to the file from which data can be read. 
+        * It should be structured as shown in example csv file in dataFileExamples/maut.csv.
 	*/
 	public MAUT(String filename) {		
 		alternatives = new LinkedList<Alternative>();
@@ -176,27 +176,45 @@ public class MAUT {
     }
 	    
     
+    /**
+     * Basic MAUT class constructor.
+     * The MAUT object created by this constructor is empty. Epsilon parameter value is set to default (0.0001).
+     */
     public MAUT() {
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
                 ranking = new LinkedList<Alternative>();
     }
     
+     /**
+     * MAUT class constructor with all the important data as paramaters.
+     * @param criteria LinkedList object containing Criterium objects which represent criteria in MCO problem. 
+     * @param alternatives LinkedList object containing Alternatice objects which represent alternatives in MCO problem.
+     */
     public MAUT(LinkedList<Criterium> criteria, LinkedList<Alternative> alternatives) {
                 this.criteria = criteria;
                 this.alternatives = alternatives;
                 ranking = new LinkedList<Alternative>();
     }
     
+     /**
+     * Adds criterium to MAUT method object.
+     * @param criterium Criterium object.
+     */
     public void addCriterium(Criterium criterium)   {
             criteria.add(criterium);
     }
     
     
+     /**
+     * Adds alternative to MAUT object.
+     * @param alternative Alternative object.
+     */
     public void addAlternative(Alternative alternative)   {
        alternative.setId(alternatives.size()+1);
        alternatives.add(alternative);
     }
+   
     
      private void normalizeWeightsInGroup(GroupCriterium groupCriterium)  {
         double sum = 0;
@@ -212,6 +230,9 @@ public class MAUT {
         }
     }
             
+    /**
+     * Normalizes weight of criteria added to MAUT to ensure that sum of all the criteria weights equals 1.
+     */
     public void normalizeWeights()  {
         double sum = 0;
         for(int i=0; i<criteria.size();i++) {
@@ -244,6 +265,9 @@ public class MAUT {
      }
     
     
+      /**
+     * Performs MAUT method calculations on data added to MAUT object.
+     */
     public void calculate ()  {     
         normalizeWeights();
         
@@ -272,34 +296,71 @@ public class MAUT {
     
     }
     
+      /**
+     * Returns list of all the criteria in MAUT object.
+     * @return LinkedList containing Criterium objects.
+     */
     public LinkedList<Criterium> getCriteria() {
         return criteria;
     }
     
+      /**
+     * Returns Criterium with the i order number. 
+     * @param i Criterium order number.
+     * @return Criterium object.
+     */
     public Criterium getCriterium(int i)    {
         return criteria.get(i);
     }
 
+        /**
+     * Sets criteria in MAUT object to LinkedList provided as parameter.
+     * @param criteria LinkedList object containing Criterium objects.
+     */
     public void setCriteria(LinkedList<Criterium> criteria) {
         this.criteria = criteria;
     }
 
+        /**
+    * Return all the alternatives stored in MAUT object.
+     * @return LinkedList containing Alternative objects.
+     */
     public LinkedList<Alternative> getAlternatives() {
         return alternatives;
     }
     
+        /**
+     * Returns Alternative with the i order number.
+     * @param i Alternative order number.
+     * @return Alternative object.
+     */
     public Alternative getAlternative(int i)    {
         return alternatives.get(i);
     }
 
+
+        /**
+     * Sets alternatives in MAUT object to LinkedList provided as parameter.
+     * @param alternatives LinkedList object containing Alternative objects.
+     */
     public void setAlternatives(LinkedList<Alternative> alternatives) {
         this.alternatives = alternatives;
     }
     
+
+        /**
+     * Returns ranking - all the alternatives in MAUT object ordered by their score calculated by MAUT method. 
+     * @return LinkedList object containing Alternative objects ordered by their MAUT score. 
+     */
     public LinkedList<Alternative> getRanking() {
         return ranking;
     }
     
+        /**
+     * Returns MAUT score of i-th alternative.
+     * @param i Alternative order number.
+     * @return i-th alternative MAUT score.
+     */
     public double getAlternativeValue(int i)    {
         if(i<alternatives.size())   {
             return alternatives.get(i).getScore();
@@ -307,17 +368,37 @@ public class MAUT {
         return 0;
     }
     
+
+        /**
+     * Returns MAUT score of alternative alt. It has to be one of the alternatives added to the object before running calculate() method.
+     * @param alt Alternative object.
+     * @return MAUT score of alternative object.
+     */
     public double getAlternativeValue(Alternative alt)    {
         return alt.getScore();
     }
-    
+        
+    /**
+     * Returns alternative with specific rank in ranking calculated by MAUT method.
+     * @param rank Rank number of wanted alternative.
+     * @return Alternative object of alternative with wanted rank.
+     */
     public Alternative getAlternativeByRank(int rank)    {
         return ranking.get(rank);
-    }    
+    }        
     
+    /**
+     * Returns number of criteria in MAUT object.
+     * @return Number of criteria in MAUT object.
+     */
     public int getCriteriaNum() {
         return this.criteria.size();
     }
+    
+    /**
+     * Returns number of criteria in MAUT object.
+     * @return Number of criteria in MAUT object.
+     */
     public int getAlternativesNum() {
         return this.alternatives.size();
     }
