@@ -2,7 +2,7 @@ package methods.AHP;
 
 
 /**
- * Criterium class specific for AHP method class.
+ * Criterium class specific to AHP method class.
  * Extends methods.BasicTypes.Criterium.
  * @author Mateusz Krasucki
  * @see methods.BasicTypes.Criterium

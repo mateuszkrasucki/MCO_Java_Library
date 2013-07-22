@@ -3,15 +3,20 @@ package methods.Promethee;
 import java.util.LinkedList;
 
 /**
- *
- * @author mateuszkrasucki
+ * Alternative class specific to Promethee method class.
+ * Extends methods.BasicTypes.Alternative.
+ * @author Mateusz Krasucki
+ * @see methods.BasicTypes.Alternative
  */
 public class Alternative extends methods.BasicTypes.Alternative {
         private double mpfPlus;
         private double mpfMinus;
         private double mpf;
         
-        public Alternative() {
+	/**
+     * Basic constructor of Promethee Alternative class.
+     */
+    public Alternative() {
 		super();
                 mpfPlus = 0;
                 mpfMinus = 0;
@@ -19,41 +24,74 @@ public class Alternative extends methods.BasicTypes.Alternative {
 	}
         
        
-	public Alternative(String name) {
+	/**
+     * Promethee Alternative class constructor with alternative name as parameter.
+     * @param name Alternative name.
+     */
+    public Alternative(String name) {
 		super(name);
                 mpfPlus = 0;
                 mpfMinus = 0;
                 mpf = 0;
 	}
         
-        public Alternative(String name, LinkedList<Double> criteriaValues) {
+	/**
+     * Promethee Alternative class constructor with alternative name and criteria values as parameter.
+     * @param name Alternative name.
+     * @param criteriaValues LinkedList containing criteria values.
+     */
+    public Alternative(String name, LinkedList<Double> criteriaValues) {
 		super(name, criteriaValues);
                 mpfPlus = 0;
                 mpfMinus = 0;
                 mpf = 0;
 	}
 
-        public double getMpfPlus() {
+         /**
+     * Returns alternative MPF+ score calcualted by Promethee (if calculated, if not it always equals )
+     * @return Alternative MPF+ score calcualted by Promethee 
+     */
+    public double getMpfPlus() {
             return mpfPlus;
         }
 
-        protected void setMpfPlus(double mpfPlus) {
+        /**
+     * Sets alternative MPF+ score to value provided as parameter, protected becaue it is meant to be used only by Promethee class.
+     * @param mpfPlus Alternative MPF+ score.
+     */
+    protected void setMpfPlus(double mpfPlus) {
             this.mpfPlus = mpfPlus;
         }
 
-        public double getMpfMinus() {
+         /**
+     * Returns alternative MPF- score calcualted by Promethee (if calculated, if not it always equals )
+     * @return Alternative MPF- score calcualted by Promethee 
+     */
+    public double getMpfMinus() {
             return mpfMinus;
         }
 
-        protected void setMpfMinus(double mpfMinus) {
+        /**
+     * Sets alternative MPF- score to value provided as parameter, protected becaue it is meant to be used only by Promethee class.
+     * @param mpfMinus Alternative MPF- score.
+     */
+    protected void setMpfMinus(double mpfMinus) {
             this.mpfMinus = mpfMinus;
         }
 
-        public double getMpf() {
+         /**
+     * Returns alternative MPF score calcualted by Promethee (if calculated, if not it always equals )
+     * @return Alternative MPF score calcualted by Promethee 
+     */
+    public double getMpf() {
             return mpf;
         }
 
-        protected void setMpf(double mpf) {
+        /**
+     * Sets alternative MPF score to value provided as parameter, protected becaue it is meant to be used only by Promethee class.
+     * @param mpf Alternative MPF score.
+     */
+    protected void setMpf(double mpf) {
             this.mpf = mpf;
         }
         

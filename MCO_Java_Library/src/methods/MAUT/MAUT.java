@@ -231,7 +231,7 @@ public class MAUT {
     }
             
     /**
-     * Normalizes weight of criteria added to MAUT to ensure that sum of all the criteria weights equals 1.
+     * Normalizes weight of criteria added to MAUT method object to ensure that sum of all the criteria weights equals 1.
      */
     public void normalizeWeights()  {
         double sum = 0;

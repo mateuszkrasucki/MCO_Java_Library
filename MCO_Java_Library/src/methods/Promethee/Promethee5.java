@@ -10,28 +10,49 @@ import org.ojalgo.optimisation.Optimisation;
 import java.math.BigDecimal;
 
 /**
- *
+ * Promethee V (Promethee5) method class. 
+ * Results are based on MPF (net multicriteria preference flow) so basic Promethee method results (e.g. ranking) are the same as for Promethee2 method class. 
+ * Promethee5 method allows to set constraints and find best set of alternatives matching those constraints.
+ * extends methods.Promethee.Promethee abstract class.
  * @author Mateusz Krasucki
+ * @see methods.Promethee.Promethee
  */
 public class Promethee5 extends Promethee{
         /**
-	* 
-	* Cosntructor with data read from file
-	* @param filename Filename where data can be read from. It should be structured as shown in example csv file in dataFileExamples/promethee.csv
+         * LinkedList containing the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+         */
+        private LinkedList<Alternative> alternativesBestSet;
+
+        /**
+         * Aggregated multicriteria preference flow value of the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+         */
+        private double bestSetMPF;
+    
+        /**
+	* Promethee5 class constructor with data file as an parameter. 
+	* @param filename Path to the file from which data can be read. 
+        * It should be structured as shown in example csv file in dataFileExamples/promethee.csv.
 	*/
 	public Promethee5(String filename) {		
-             super(filename);   	
+             super(filename);   
+             alternativesBestSet = new LinkedList<Alternative>();
+             bestSetMPF = 0;
         }
-    
+        
+    /**
+     * Basic Promethee5 class constructor.
+     * The Promethee object created by this constructor is empty (no alternatives and criteria set).
+     */
         public Promethee5() {
             super();
+            alternativesBestSet = new LinkedList<Alternative>();
+             bestSetMPF = 0;
         }
     
-
-        public void addConstraint(Constraint constraint)  {
-            super.addConstraint(constraint);
-        }
-    
+        
+      /**
+     * Performs Promethee5 method calculations on data added to Promethee5 object.
+     */
         public void calculate()  { 
             normalizeWeights();
 
@@ -95,28 +116,76 @@ public class Promethee5 extends Promethee{
         }
 
    
+     /**
+     * Adds constraint to Promethee method object.
+     * @param constraint Constraint object.
+     */
+    public void addConstraint(Constraint constraint)  {
+        if(criteria.indexOf(constraint.getCriterium())!=-1)  {
+            constraints.add(constraint);
+        }
+    }
+        
+      /**
+     * Returns list of all the constraints in Promethee5 object.
+     * @return LinkedList containing Constraint objects from Promethee object.
+     */
     public LinkedList<Constraint> getConstraints() {
         return constraints;
     }
     
+      /**
+     * Returns Constraint with the i-th order number. 
+     * @param i Constraint order number.
+     * @return I-th constraint object.
+     */
     public Constraint getConstraint(int i)  {
         return constraints.get(i);
     }
 
+        /**
+     * Sets constraints in Promethee5 object to LinkedList provided as a parameter.
+     * @param constraints LinkedList object containing Constraint objects.
+     */
     public void setConstraints(LinkedList<Constraint> constraints) {
         this.constraints = constraints;
     }
 
+    /**
+     * Returns the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+     * @return LinkedList containing the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+     */ 
     public LinkedList<Alternative> getAlternativesBestSet() {
         return alternativesBestSet;
     }
 
-    public void setAlternativesBestSet(LinkedList<Alternative> alternativesBestSet) {
-        this.alternativesBestSet = alternativesBestSet;
-    }
-
+    /**
+     * Returns aggregated multicriteria preference flow value of the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+     * @return Aggregated multicriteria preference flow value of the best set of alternatives matching all the constraints as calculated by Promethee5 method.
+     */
     public double getBestSetMPF() {
         return bestSetMPF;
     }     
+    
+        /**
+     * Returns Promethee2 score (MPF) of i-th alternative.
+     * @param i Alternative order number.
+     * @return I-th alternative Promethee2 score (MPF).
+     */
+    public double getAlternativeValue(int i)    {
+        if(i<alternatives.size())   {
+            return alternatives.get(i).getMpf();
+        }
+        return 0;
+    }
+
+        /**
+     * Returns Promethee2 score (MPF) of alternative alt. It has to be one of the alternatives added to the object before running calculate() method.
+     * @param alt Alternative object.
+     * @return Promethee2 score (MPF) of the alternative object.
+     */
+    public double getAlternativeValue(Alternative alt)    {
+        return alt.getMpf();
+    }
     
 }

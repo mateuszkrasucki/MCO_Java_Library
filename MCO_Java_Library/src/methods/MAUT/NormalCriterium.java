@@ -10,7 +10,7 @@ package methods.MAUT;
 public class NormalCriterium extends Criterium {
     
 	/**
-     * Enum type describing type of utility function applied to criteriu.
+     * Enum type describing type of utility function applied to criterium.
      */
     public enum UtilityFunctionType {
             /**
@@ -102,7 +102,7 @@ public class NormalCriterium extends Criterium {
         }
 
         /**
-     * Return utility function object of this criterium.
+     * Returns utility function object of this criterium.
      * @return Utility function object of this criterium.
      */
     public UtilityFunction getUtilityFunction() {

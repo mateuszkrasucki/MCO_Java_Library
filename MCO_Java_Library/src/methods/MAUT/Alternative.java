@@ -38,7 +38,7 @@ public class Alternative extends methods.BasicTypes.Alternative {
 	}
 
         /**
-     * Return alternative score calcualted by MAUT (if calculated, if not 0)
+     * Returns alternative score calcualted by MAUT (if calculated, if not 0)
      * @return Alternative score calcualted by MAUT 
      */
     public double getScore() {

@@ -8,34 +8,47 @@ import org.ejml.simple.SimpleMatrix;
 import java.util.HashMap;
 import java.util.Map;
 /**
- *
+ * Abstract Promethee class on which Promethee1, Promethee2 and Promethee5 classes are based. 
  * @author Mateusz Krasucki
  */
 public abstract class Promethee {
+    /**
+     * LinkedList containing all the criteria in MCO problem represented by Promethee method object.
+     * It is protected because it is meant to be accesed only by child classes which represent indicidual MCO methods from Promethee methods set.
+     */
     protected LinkedList<Criterium> criteria;
+    /**
+     * LinkedList containing all the alternatives in MCO problem represented by Promethee method object.
+     * It is protected because it is meant to be accesed only by child classes which represent indicidual MCO methods from Promethee methods set.
+     */
     protected LinkedList<Alternative> alternatives;
+    /**
+     * LinkedList containing all the constraint in MCO problem represented by Promethee5 method object. 
+     * It is protected because it is meant to be accesed only by child classes which represent indicidual MCO methods from Promethee methods set.
+     */
     protected LinkedList<Constraint> constraints;
     
+    /**
+     * LinkedList containing all the alternatives in MCO problem represented by Promethee method object ordered by their score calculated by Promethee method.
+     * It is protected because it is meant to be accesed only by child classes which represent indicidual MCO methods from Promethee methods set.
+     */
     protected LinkedList<Alternative> ranking;
-    protected LinkedList<Alternative> alternativesBestSet;
-    protected double bestSetMPF;
     
+    /**
+     * Simple matrix object containing aggregated preference indices as calculated by Promethee family method.
+     */
     protected SimpleMatrix mpd;
     
         /**
-	* 
-	* Cosntructor with data read from file
-	* @param filename Filename where data can be read from. It should be structured as shown in example csv file in dataFileExamples/promethee.csv
+	* Promethee class constructor with data file as an parameter. 
+	* @param filename Path to the file from which data can be read. 
+        * It should be structured as shown in example csv file in dataFileExamples/promethee.csv.
 	*/
 	public Promethee(String filename) {	
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
                 constraints = new LinkedList<Constraint>();
                 ranking = new LinkedList<Alternative>();
-                
-                alternativesBestSet = new LinkedList<Alternative>();
-                bestSetMPF = 0;
-                
 			
 		BufferedReader br = null;
 		String line = "";
@@ -167,32 +180,50 @@ public abstract class Promethee {
                					
     }
     
+    /**
+     * Basic Promethee class constructor.
+     * The Promethee object created by this constructor is empty (no alternatives, criteria or constraints set).
+     */
     public Promethee() {
                 criteria = new LinkedList<Criterium>();
                 alternatives = new LinkedList<Alternative>();
                 constraints = new LinkedList<Constraint>();
                 ranking = new LinkedList<Alternative>();
-                
-                alternativesBestSet = new LinkedList<Alternative>();
-                bestSetMPF = 0;
     }
     
+    
+     /**
+     * Adds criterium to Promethee method object.
+     * @param criterium Criterium object.
+     */
     public void addCriterium(Criterium criterium)   {
-        criteria.add(criterium);
+            criteria.add(criterium);
     }
     
     
+     /**
+     * Adds alternative to Promethee method object.
+     * @param alternative Alternative object.
+     */
     public void addAlternative(Alternative alternative)   {
-        alternative.setId(alternatives.size()+1);
-        alternatives.add(alternative);
+       alternative.setId(alternatives.size()+1);
+       alternatives.add(alternative);
     }
-
-    protected void addConstraint(Constraint constraint)  {
+   
+     /**
+     * Adds constraint to Promethee method object.
+     * Here it is private cause it is used by common constructor methods. It is made public only in Promethee5 child class because constraints are used in this method.
+     * @param constraint Constraint object.
+     */
+    private void addConstraint(Constraint constraint)  {
         if(criteria.indexOf(constraint.getCriterium())!=-1)  {
             constraints.add(constraint);
         }
     }
     
+    /**
+     * Normalizes weight of criteria added to Promethee method object to ensure that sum of all the criteria weights equals 1.
+     */
     public void normalizeWeights()  {
         double sum = 0;
         for(int i=0; i<criteria.size();i++) {
@@ -203,9 +234,16 @@ public abstract class Promethee {
         }
     }   
     
+      /**
+     * Performs Promethee method calculations on data added to Promethee object.
+     * Abstract method, implemented in child classes which represent specific Promethee family methods.
+     */
     public abstract void calculate();
     
    
+    /**
+     * Calculates aggregated preference indices matrix (MPD matrix).
+     */
     protected void calculateMPD()  {
         mpd = new SimpleMatrix(this.getAlternativesNum(),this.getAlternativesNum());
         mpd.zero();
@@ -222,6 +260,9 @@ public abstract class Promethee {
         }
     }
     
+    /**
+     * Calculates multicriteria preference flows (MPF+, MPF- and MPF).
+     */
     protected void calculateMPF()  {
         SimpleMatrix mpf_plus = new SimpleMatrix(this.getAlternativesNum(),1);
         mpf_plus.zero();
@@ -244,54 +285,87 @@ public abstract class Promethee {
         }
         
     }
-
+      /**
+     * Returns list of all the criteria in Promethee object.
+     * @return LinkedList containing Criterium objects.
+     */
     public LinkedList<Criterium> getCriteria() {
         return criteria;
     }
     
+      /**
+     * Returns Criterium with the i-th order number. 
+     * @param i Criterium order number.
+     * @return I-th criterium object.
+     */
     public Criterium getCriterium(int i)    {
         return criteria.get(i);
     }
 
+        /**
+     * Sets criteria in Promethee object to LinkedList provided as a parameter.
+     * @param criteria LinkedList object containing Criterium objects.
+     */
     public void setCriteria(LinkedList<Criterium> criteria) {
         this.criteria = criteria;
     }
 
+        /**
+    * Return all the alternatives stored in Promethee object.
+     * @return LinkedList containing Alternative objects.
+     */
     public LinkedList<Alternative> getAlternatives() {
         return alternatives;
     }
     
+        /**
+     * Returns Alternative with the i-th order number.
+     * @param i Alternative order number.
+     * @return Alternative object.
+     */
     public Alternative getAlternative(int i)    {
         return alternatives.get(i);
     }
 
+
+        /**
+     * Sets alternatives in Promethee object to LinkedList provided as parameter.
+     * @param alternatives LinkedList object containing Alternative objects.
+     */
     public void setAlternatives(LinkedList<Alternative> alternatives) {
         this.alternatives = alternatives;
     }
     
+
+        /**
+     * Returns ranking - all the alternatives in Promethee object ordered by their score calculated by Promethee method. 
+     * @return LinkedList object containing Alternative objects ordered by their Promethee score. 
+     */
     public LinkedList<Alternative> getRanking() {
         return ranking;
     }
-    
-    public double getAlternativeValue(int i)    {
-        if(i<alternatives.size())   {
-            return alternatives.get(i).getMpf();
-        }
-        return 0;
-    }
-    
-    public double getAlternativeValue(Alternative alt)    {
-        return alt.getMpf();
-    }
-    
+            
+    /**
+     * Returns alternative with specific rank in ranking calculated by Promethee method.
+     * @param rank Rank number of wanted alternative.
+     * @return Alternative object of alternative with wanted rank.
+     */
     public Alternative getAlternativeByRank(int rank)    {
         return ranking.get(rank);
-    }    
+    }        
     
+    /**
+     * Returns number of criteria in Promethee object.
+     * @return Number of criteria in Promethee object.
+     */
     public int getCriteriaNum() {
         return this.criteria.size();
     }
     
+    /**
+     * Returns number of criteria in Promethee object.
+     * @return Number of criteria in Promethee object.
+     */
     public int getAlternativesNum() {
         return this.alternatives.size();
     }

@@ -1,7 +1,7 @@
 package methods.MAUT;
 
 /**
- * Abstract Criterium class specific for MAUT method class.
+ * Abstract Criterium class specific to MAUT method class.
  * Extends methods.BasicTypes.Criterium. It is extended by GroupCriterium class and NormalCriterium class.
  * @author Mateusz Krasucki
  * @see methods.BasicTypes.Criterium
