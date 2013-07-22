@@ -12,17 +12,8 @@ public class UTASTAR_test {
         UTASTAR test = new UTASTAR("/Users/mateuszkrasucki/Desktop/datafiles/utastar.csv");
         test.calculate();
         
+      
         String su = "[";
-        for(int i=0; i<test.getAverageWeightMatrix().length; i++)   {
-            for(int j=0; j<test.getAverageWeightMatrix()[i].length; j++)    {
-                su += " " + test.getAverageWeightMatrix()[i][j];
-            }
-            su += "\n";
-        }
-        su += "]";
-        System.out.println("\n" + "averageWeightMatrix: \n" + su);
-        
-        su = "[";
         for(int i=0; i<test.getCriteriaNum(); i++)   {
             for(int j=0; j<test.getCriterium(i).getMufArgs().size(); j++)    {
                 su += " " + test.getCriterium(i).getMufArg(j);
@@ -30,9 +21,18 @@ public class UTASTAR_test {
             su += "\n";
         }
         su += "]";
-        System.out.println("\n" + "marginalValueFunctions: \n" + su);
+        System.out.println("\n" + "marginal utility function arguments: \n" + su);
         
-      
+     
+        su = "[";
+        for(int i=0; i<test.getCriteriaNum(); i++)   {
+            for(int j=0; j<test.getCriterium(i).getMarginalUtilityFunction().size(); j++)    {
+                su += " " + test.getCriterium(i).getMarginalUtilityFunctionValue(j);
+            }
+            su += "\n";
+        }
+        su += "]";
+        System.out.println("\n " + "marginal utility function values: \n" + su);      
         
         su = "[";
         for(int t = 0; t < test.getReferenceAlternatives().size(); t++)  {
@@ -117,24 +117,14 @@ public class UTASTAR_test {
         test.calculate();
         
         String su = "[";
-        for(int i=0; i<test.getAverageWeightMatrix().length; i++)   {
-            for(int j=0; j<test.getAverageWeightMatrix()[i].length; j++)    {
-                su += " " + test.getAverageWeightMatrix()[i][j];
-            }
-            su += "\n";
-        }
-        su += "]";
-        System.out.println("\n \n \n" + "averageWeightMatrix: \n" + su);
-        
-        su = "[";
         for(int i=0; i<test.getCriteriaNum(); i++)   {
-            for(int j=0; j<test.getCriterium(i).getMufArgs().size(); j++)    {
-                su += " " + test.getCriterium(i).getMufArg(j);
+            for(int j=0; j<test.getCriterium(i).getMarginalUtilityFunction().size(); j++)    {
+                su += " " + test.getCriterium(i).getMarginalUtilityFunctionValue(j);
             }
             su += "\n";
         }
         su += "]";
-        System.out.println("\n \n \n" + "marginalValueFunctions: \n" + su);
+        System.out.println("\n " + "marginalValueFunctions: \n" + su);
         
       
         

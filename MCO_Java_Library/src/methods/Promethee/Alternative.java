@@ -9,8 +9,17 @@ import java.util.LinkedList;
  * @see methods.BasicTypes.Alternative
  */
 public class Alternative extends methods.BasicTypes.Alternative {
+    /**
+     * Alternatvie positive multicriteria preference flow calculated by Promethee family method.
+     */
         private double mpfPlus;
+    /**
+     * Alternatvie negative multicriteria preference flow calculated by Promethee family method.
+     */
         private double mpfMinus;
+    /**
+     * Alternatvie net multicriteria preference flow calculated by Promethee family method.
+     */
         private double mpf;
         
 	/**

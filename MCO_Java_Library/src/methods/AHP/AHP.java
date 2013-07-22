@@ -15,8 +15,18 @@ import org.ejml.simple.SimpleEVD;
  * @author Mateusz Krasucki, Gabriela Pastuszka
  */
 public class AHP {
+    
+        /**
+         * LinkedList containing all the criteria in MCO problem represented by UTASTAR method object.
+        */
         private LinkedList<Criterium> criteria;
+        /**
+         * LinkedList containing all the alternatives in MCO problem represented by UTASTAR method object. Those alternatives will be scored using information obtained from reference alternatives preference standings (outranking) provided by decision maker.
+        */
         private LinkedList<Alternative> alternatives;
+        /**
+         * LinkedList containing all the alternatives in MCO problem represented by UTASTAR method object ordered by their score calculated by UTASTAR method based on reference alternative preference standings.
+        */
         private LinkedList<Alternative> ranking;
 	
 	private LinkedList<SimpleMatrix> altsCriteriaValues; // alternatives' criteria pariwaise comparisons values matrix
@@ -34,7 +44,7 @@ public class AHP {
         private SimpleMatrix alternativesValues; // final results.
         
         /**
-	* AHP class constructor with data file as an parameter. 
+	* AHP class constructor with data file as a parameter. 
 	* @param filename Path to the file from which data can be read. 
         * It should be structured as csv file in dataFileExamples/ahp.csv. In the first line there should be epsilon value followed by criteria number and alternatives number. In the second line you should place alternatives' names. 
         * Starting from third line there is place for criteria name and fixing matrix flag (fixMatrix or doNotFixMatrix) followed by alternatives' criterium pariwaise comparisons values matrix.

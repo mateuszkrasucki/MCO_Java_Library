@@ -305,7 +305,7 @@ public class MAUT {
     }
     
       /**
-     * Returns Criterium with the i order number. 
+     * Returns Criterium with the i-th order number. 
      * @param i Criterium order number.
      * @return Criterium object.
      */
@@ -330,7 +330,7 @@ public class MAUT {
     }
     
         /**
-     * Returns Alternative with the i order number.
+     * Returns i-th alternative.
      * @param i Alternative order number.
      * @return Alternative object.
      */
@@ -396,8 +396,8 @@ public class MAUT {
     }
     
     /**
-     * Returns number of criteria in MAUT object.
-     * @return Number of criteria in MAUT object.
+     * Returns number of alternatives in MAUT object.
+     * @return Number of alternatives in MAUT object.
      */
     public int getAlternativesNum() {
         return this.alternatives.size();
