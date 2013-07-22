@@ -7,7 +7,9 @@ package methods.BasicTypes;
  */
 
 public abstract class Constraint {
-
+    /**
+     * Criterium object which will be affaected by this Constraint object.
+     */
 	private Criterium criterium;
 	/**
      * Enum type describing type of Constraint object.
@@ -22,8 +24,15 @@ public abstract class Constraint {
              */
             BOTTOM
 	}
+        
+        /**
+         * Type of the constraint, ConstraintType enum type object.
+         */
 	private Constraint.ConstrainType constraintType;
         
+        /**
+         * Value of the constraint.
+         */
 	private double value;
         
 	/**

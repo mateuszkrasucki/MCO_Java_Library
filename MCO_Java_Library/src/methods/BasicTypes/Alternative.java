@@ -7,9 +7,19 @@ import java.util.LinkedList;
  * @author Mateusz Krasucki
  */
 public abstract class Alternative {
+    /**
+     * Alternative name.
+     */
     	private String name;
 
+     /**
+      * Alternative criteria values.
+      */
 	private LinkedList<Double> criteriaValues;
+        
+     /**
+      * Alternative id, set by method class object.
+      */   
         private int id; 
        
 	/**

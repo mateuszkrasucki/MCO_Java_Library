@@ -9,6 +9,10 @@ import java.util.LinkedList;
  * @see methods.MAUT.Criterium
  */
 public class GroupCriterium extends Criterium{
+    
+    /**
+     * List of criteria grouped by this criterium.
+     */
     private LinkedList<Criterium> innerCriteria;
     
     

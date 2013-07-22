@@ -10,7 +10,15 @@ package methods.Promethee;
  */
 public class LinearPreferenceFunction implements PreferenceFunction {
     
+    /**
+     * Indifference threshold paramater. 
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=0 -> result = 0, d>0 -> (d - this.q)/(this.p-this.q);
+     */
     private double q;
+    /**
+     * Preference threshold paramater.  
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=0 -> result = 0, d>0 -> (d - this.q)/(this.p-this.q);
+     */
     private double p;
     
     

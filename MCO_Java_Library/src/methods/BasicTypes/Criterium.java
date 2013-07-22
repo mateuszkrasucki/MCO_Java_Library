@@ -7,7 +7,14 @@ package methods.BasicTypes;
 
 public abstract class Criterium {
 
+    /** 
+     * Criterium name.
+     */
 	private String name;
+        
+        /**
+         * Criterium weight.
+         */
 	private double weight;
         	
 	/**

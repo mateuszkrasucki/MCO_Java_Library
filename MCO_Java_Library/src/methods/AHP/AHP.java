@@ -28,21 +28,45 @@ public class AHP {
          * LinkedList containing all the alternatives in MCO problem represented by UTASTAR method object ordered by their score calculated by UTASTAR method based on reference alternative preference standings.
         */
         private LinkedList<Alternative> ranking;
-	
-	private LinkedList<SimpleMatrix> altsCriteriaValues; // alternatives' criteria pariwaise comparisons values matrix
-	
-	private SimpleMatrix criteriaMatrix; // criteria importance pairwaise comparisons matrix      
         
-        private double epsilon; // stop condition for eigenvectors calcualtions.
-              
         
+	/**
+         * Alternatives' criteria pariwaise comparisons values matrix.
+         */
+	private LinkedList<SimpleMatrix> altsCriteriaValues; 
+        
+        /**
+         * Criteria importance pairwaise comparisons matrix.   
+         */
+	private SimpleMatrix criteriaMatrix; 
+        
+        
+        /**
+         *  Stop condition for eigenvectors calcualtions.
+         */
+        private double epsilon; 
+        
+        
+        /**
+         * Auxillary variable indicating if calculations have been performed.
+         */
         private boolean calculated_;
         
         //results:
-        private SimpleMatrix criteriaWeights; // computed as eigenvector of criteriaMatrix
-        private SimpleMatrix alternativesCriteriaValues; // computed as eigenvector of subsequent altsCriteriaValues matrices.
-        private SimpleMatrix alternativesValues; // final results.
+        /*
+         * Criteria weights, computed as eigenvector of criteriaMatrix.
+        */
+        private SimpleMatrix criteriaWeights; 
         
+        /*
+         * Alternatives criteria values, computed as eigenvector of subsequent altsCriteriaValues matrices.
+         */
+        private SimpleMatrix alternativesCriteriaValues;
+        
+        /*
+         * Temporary SimpleMatrix variable storing final results (alternatives scores).
+         */
+        private SimpleMatrix alternativesValues;         
         /**
 	* AHP class constructor with data file as a parameter. 
 	* @param filename Path to the file from which data can be read. 
@@ -385,7 +409,10 @@ public class AHP {
 	}
 	
         
-        
+        /** 
+         * Calculates eigen vector of the matrix provided as a parameter.
+         * @param matrix Matrix for which eigen vector will be calculated.
+         */
 	private SimpleMatrix calculateEigenVector(SimpleMatrix matrix) {
                         SimpleMatrix tmp = matrix;
 			SimpleEVD  decomp;

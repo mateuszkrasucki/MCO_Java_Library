@@ -16,11 +16,23 @@ import java.util.Map;
  */
 public class MAUT {
     
-    private LinkedList<Criterium> criteria;
-    private LinkedList<Alternative> alternatives;
-    private LinkedList<Alternative> ranking;
+        /**
+         * LinkedList containing all the criteria in MCO problem represented by UTASTAR method object.
+        */
+        private LinkedList<Criterium> criteria;
+        /**
+         * LinkedList containing all the alternatives in MCO problem represented by UTASTAR method object. Those alternatives will be scored using information obtained from reference alternatives preference standings (outranking) provided by decision maker.
+        */
+        private LinkedList<Alternative> alternatives;
+        /**
+         * LinkedList containing all the alternatives in MCO problem represented by UTASTAR method object ordered by their score calculated by UTASTAR method based on reference alternative preference standings.
+        */
+        private LinkedList<Alternative> ranking;
    
-    private int iterationCount;
+        /**
+         * Auxillary variable.
+         */
+        private int iterationCount;
        
     
         /**
@@ -215,7 +227,10 @@ public class MAUT {
        alternatives.add(alternative);
     }
    
-    
+    /**
+     * Normalize weights within group criterium.
+     * @param groupCriterium Group criterium which child criteria weight will be normalized. 
+     */
      private void normalizeWeightsInGroup(GroupCriterium groupCriterium)  {
         double sum = 0;
         for(int i=0; i<groupCriterium.getInnerCriteriaCount(); i++) {
@@ -247,6 +262,11 @@ public class MAUT {
         }
     }   
     
+    /**
+     * Calculates value of the specific criterium of the alternative. It is reccurent when nested group criteria are involved.
+     * @param alternative Alternative for which criterium value will be calculated.
+     * @param criterium Criterium for which value will be calculates.
+     */
     private double calculateCriterium(Alternative alternative, Criterium criterium)    {
         if(criterium.isGroup())  {
             GroupCriterium groupCriterium = (GroupCriterium)criterium;

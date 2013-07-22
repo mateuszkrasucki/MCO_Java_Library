@@ -10,7 +10,15 @@ package methods.Promethee;
  */
 public class LevelPreferenceFunction implements PreferenceFunction {
     
+    /**
+     * Indifference threshold paramater. 
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=q -> result = 0, d>q AND d<=p -> result = 1/2, d>p -> result = 1
+     */
     private double q;
+    /**
+     * Preference threshold paramater.  
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=q -> result = 0, d>q AND d<=p -> result = 1/2, d>p -> result = 1
+     */
     private double p;
     
     

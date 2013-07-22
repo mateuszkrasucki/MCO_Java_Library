@@ -22,6 +22,10 @@ public class NormalCriterium extends Criterium {
          */
         EXPONENTIAL
         }
+    
+    /**
+     * Type of utility function applied to criterium.
+     */
         private UtilityFunction utilityFunction;
         
         

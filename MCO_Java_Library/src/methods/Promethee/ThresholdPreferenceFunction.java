@@ -10,7 +10,11 @@ package methods.Promethee;
  * @see PreferenceFunction
  */
 public class ThresholdPreferenceFunction implements PreferenceFunction {
-        
+    
+    /**
+     * Indifference threshold paramater. 
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=q -> result = 0, d>q -> result = 1
+     */
     private double q;
     
     /**

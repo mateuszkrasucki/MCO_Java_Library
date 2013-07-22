@@ -8,6 +8,10 @@ package methods.AHP;
  * @see methods.BasicTypes.Alternative
  */
 public class Alternative extends methods.BasicTypes.Alternative {
+    
+    /*
+     * Alternative score calculated by AHP method.
+     */
         private double ahpScore;
     
     

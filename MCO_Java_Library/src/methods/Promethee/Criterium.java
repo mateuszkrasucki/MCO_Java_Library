@@ -21,8 +21,16 @@ public class Criterium extends methods.BasicTypes.Criterium {
              */
             MAX;
 	}
+    
+      /**
+       * Criterium optimization direction. 
+       */
 	private Criterium.Direction direction;    
         
+        
+       /**
+        * Preference function object which will be used to calculate preference between two values of this criterium.
+        */ 
         private PreferenceFunction preferenceFunction;
         
     /**

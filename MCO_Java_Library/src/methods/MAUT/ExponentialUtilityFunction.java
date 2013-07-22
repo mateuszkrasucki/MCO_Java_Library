@@ -11,8 +11,20 @@ package methods.MAUT;
  */
 public class ExponentialUtilityFunction implements UtilityFunction {
         
+    /**
+     * Parameter a of exponential utility function.
+     * result = a_ + b_ * Math.exp(c_*value);
+     */
     private double a_;
+    /**
+     * Parameter b of exponential utility function.
+     * result = a_ + b_ * Math.exp(c_*value);
+     */
     private double b_;
+    /**
+     * Parameter c of exponential utility function.
+     * result = a_ + b_ * Math.exp(c_*value);
+     */
     private double c_;
    
     /**

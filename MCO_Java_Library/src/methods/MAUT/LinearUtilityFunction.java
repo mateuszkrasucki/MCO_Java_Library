@@ -11,7 +11,17 @@ package methods.MAUT;
  */
 public class LinearUtilityFunction implements UtilityFunction {
         
+        
+    /**
+     * Parameter a of linear utility function.
+     * result = a_ + b_ * value;
+     */
     private double a_;
+    
+    /**
+     * Parameter b of linear utility function.
+     * result = a_ + b_ * value;
+     */
     private double b_;
   
     

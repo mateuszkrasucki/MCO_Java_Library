@@ -11,6 +11,10 @@ package methods.Promethee;
  */
 public class GaussianPreferenceFunction implements PreferenceFunction {
         
+    /**
+     * Parameter s of gaussian preference function.
+     * d = value1-value2 (MAX) OR value2-value1 (MIN), d<=0 -> result = 0, d>0 -> result = (1-Math.exp(-(Math.pow(d, 2.0)/(2*Math.pow(s,2.0)))));
+     */
     private double s;
     
     /**

@@ -9,8 +9,11 @@ import java.util.LinkedList;
  * @see methods.BasicTypes.Alternative
  */
 public class Alternative extends methods.BasicTypes.Alternative {
-        private double mautScore; // stores alternative score calcualted by MAUT method.
-        
+    
+    /*
+     * Alternative score calcualted by MAUT method.
+     */
+        private double mautScore;         
     
 	/**
      * Basic constructor of MAUT Alternative class.
