@@ -138,10 +138,10 @@ public class Criterium extends methods.BasicTypes.Criterium {
     }
     
     /**
-     *
-     * @param value1
-     * @param value2
-     * @return
+     * Calculates preference between two criterium values using preference function set for this criterium.
+     * @param value1 Criterium value on the left side of preference relation.
+     * @param value2 Criterium value on the right side of preference relation.
+     * @return Dimensionless one-sided preference value between value1 and value2.
      */
     public double calculatePreference(double value1, double value2) {
         return preferenceFunction.calculatePreference(value1, value2, this.direction);

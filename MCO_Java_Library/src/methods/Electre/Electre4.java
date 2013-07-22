@@ -43,7 +43,6 @@ public class Electre4 {
 	* Cosntructor for Electre4 method
 	* @param filename Filename where data can be read from
 	* @param s a double value of threshold used for concordance test (should be over 0.5)
-	* @param veto a double value of threshold used for disconcordance test
 	*/
 	public Electre4(String filename, Double s) {
 		

@@ -790,10 +790,10 @@ public class UTASTAR {
         return referenceAlternatives;
     }
     
-    /**
-     *
-     * @param i
-     * @return
+        /**
+     * Returns i-th reference alternative.
+     * @param i Reference alternative order number.
+     * @return Alternative object.
      */
     public Alternative getReferenceAlternative(int i)    {
         if(i>=this.referenceAlternatives.size()) {
@@ -803,9 +803,8 @@ public class UTASTAR {
     }
 
         /**
-     * Returns i-th reference alternative.
-     * @param i Alternative order number.
-     * @return Alternative object.
+     * Sets reference alternatives in UTASTAR object to LinkedList provided as parameter.
+     * @param referenceAlternatives LinkedList object containing reference alternatives Alternative objects.
      */
     public void setReferenceAlternatives(LinkedList<Alternative> referenceAlternatives) {
         this.referenceAlternatives = referenceAlternatives;
