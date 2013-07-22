@@ -16,45 +16,47 @@ public class AHP_test {
      */
     
     public static void testFromFile()   {
-        AHP ahpTest = new AHP("/Users/mateuszkrasucki/Desktop/datafiles/ahp.csv");
+        System.out.println();
+        System.out.println("TEST AHP");
+        AHP ahpTest = new AHP("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/ahp.csv");
         
         ahpTest.calculate();
         
-        System.out.println(ahpTest.getCriteriumWeight(0));
-        System.out.println(ahpTest.getCriteriumWeight(1));
-        System.out.println(ahpTest.getCriteriumWeight(2));
+        System.out.println("Waga kryterium 0 " + ahpTest.getCriteriumWeight(0));
+        System.out.println("Waga kryterium 1: " + ahpTest.getCriteriumWeight(1));
+        System.out.println("Waga kryterium 2: " + ahpTest.getCriteriumWeight(2));
         
         System.out.println();
-        
+        System.out.println("Wartości kryteriów alternatywy 0");
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 1");
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 2");
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 3");
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 2));
         
         
         System.out.println();
-        
-        System.out.println(ahpTest.getAlternative(0).getName() + " " + ahpTest.getAlternativeValue(0));
-        System.out.println(ahpTest.getAlternative(1).getName() + " " + ahpTest.getAlternativeValue(1));
-        System.out.println(ahpTest.getAlternative(2).getName() + " " + ahpTest.getAlternativeValue(2));
-        System.out.println(ahpTest.getAlternative(3).getName() + " " + ahpTest.getAlternativeValue(3));
+        System.out.println("Wartości oceny alternatyw");
+        System.out.println("Alternatywa 0 o nazwie " + ahpTest.getAlternative(0).getName() + " " + ahpTest.getAlternativeValue(0));
+        System.out.println("Alternatywa 1 o nazwie " + ahpTest.getAlternative(1).getName() + " " + ahpTest.getAlternativeValue(1));
+        System.out.println("Alternatywa 2 o nazwie " + ahpTest.getAlternative(2).getName() + " " + ahpTest.getAlternativeValue(2));
+        System.out.println("Alternatywa 3 o nazwie " + ahpTest.getAlternative(3).getName() + " " + ahpTest.getAlternativeValue(3));
     }
     public static void test()   {
 
@@ -110,46 +112,45 @@ public class AHP_test {
         ahpTest.addAltsCriteriumValues(style, false);
         ahpTest.addAltsCriteriumValues(reliability, false); 
         ahpTest.addAltsCriteriumValues(fuelEconomy, true);
-        
-        //AHP ahpTest = new AHP("/Users/mateuszkrasucki/Desktop/datafiles/ahp.csv");
-        
+        System.out.println();
+        System.out.println("TEST AHP");
         ahpTest.calculate();
         
-        System.out.println(ahpTest.getCriteriumWeight(0));
-        System.out.println(ahpTest.getCriteriumWeight(1));
-        System.out.println(ahpTest.getCriteriumWeight(2));
+        System.out.println("Waga kryterium 0 " + ahpTest.getCriteriumWeight(0));
+        System.out.println("Waga kryterium 1: " + ahpTest.getCriteriumWeight(1));
+        System.out.println("Waga kryterium 2: " + ahpTest.getCriteriumWeight(2));
         
         System.out.println();
-        
+        System.out.println("Wartości kryteriów alternatywy 0");
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(0, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 1");
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(1, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 2");
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(2, 2));
         
-                System.out.println();
-        
+        System.out.println();
+        System.out.println("Wartości kryteriów alternatywy 3");
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 0));
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 1));
         System.out.println(ahpTest.getAlternativeCriteriumValue(3, 2));
         
         
         System.out.println();
-        
-        System.out.println(ahpTest.getAlternative(0).getName() + " " + ahpTest.getAlternativeValue(0));
-        System.out.println(ahpTest.getAlternative(1).getName() + " " + ahpTest.getAlternativeValue(1));
-        System.out.println(ahpTest.getAlternative(2).getName() + " " + ahpTest.getAlternativeValue(2));
-        System.out.println(ahpTest.getAlternative(3).getName() + " " + ahpTest.getAlternativeValue(3));
+        System.out.println("Wartości oceny alternatyw");
+        System.out.println("Alternatywa 0 o nazwie " + ahpTest.getAlternative(0).getName() + " " + ahpTest.getAlternativeValue(0));
+        System.out.println("Alternatywa 1 o nazwie " + ahpTest.getAlternative(1).getName() + " " + ahpTest.getAlternativeValue(1));
+        System.out.println("Alternatywa 2 o nazwie " + ahpTest.getAlternative(2).getName() + " " + ahpTest.getAlternativeValue(2));
+        System.out.println("Alternatywa 3 o nazwie " + ahpTest.getAlternative(3).getName() + " " + ahpTest.getAlternativeValue(3));
     }
 }
 

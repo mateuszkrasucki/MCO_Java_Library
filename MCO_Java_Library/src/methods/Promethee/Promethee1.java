@@ -78,7 +78,7 @@ public class Promethee1 extends Promethee {
      * Returns information about preference (outranking) relation betweend two alternatives according to Promethee1 set of rules. Those have to be alternatives which are added to the object before running calculate() method.
      * @param a Alternative object on the left side of the preference (outranking) relation.
      * @param b Alternative object on the right side of the preference (outranking) relation.
-     * @return 1 - Alternative a outranks alternative b, 0 - indifference between two alternatives, -1 - Alternative b outranks alternative a.
+     * @return 1 - Alternative a outranks alternative b, 0 - indifference between two alternatives, -1 - Alternative b outranks alternative a, -2 - incombarability
      */
     public int getP1Preference(Alternative a, Alternative b)   {
         if((a.getMpfPlus()>b.getMpfPlus()) && (a.getMpfMinus()<=b.getMpfMinus())) {
@@ -91,11 +91,11 @@ public class Promethee1 extends Promethee {
             return 0;
         }
         else if((a.getMpfPlus()>b.getMpfPlus()) && (a.getMpfMinus()>b.getMpfMinus()))   {
-            return -1;
+            return -2;
         }
         else if ((a.getMpfPlus()<b.getMpfPlus()) && (a.getMpfMinus()<b.getMpfMinus())) {
-            return -1;           
+            return -2;           
         }
-        return 0;
+        return -1;
     }
 }

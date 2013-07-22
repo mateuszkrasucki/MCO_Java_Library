@@ -9,7 +9,9 @@ import methods.UTASTAR.*;
 public class UTASTAR_test {
     
     public static void testFromFile()   {
-        UTASTAR test = new UTASTAR("/Users/mateuszkrasucki/Desktop/datafiles/utastar.csv");
+        System.out.println();       
+        System.out.println("TEST UTASTAR");
+        UTASTAR test = new UTASTAR("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/utastar.csv");
         test.calculate();
         
       
@@ -21,7 +23,7 @@ public class UTASTAR_test {
             su += "\n";
         }
         su += "]";
-        System.out.println("\n" + "marginal utility function arguments: \n" + su);
+        System.out.println("\n" + "Argumenty marginal utility function: \n" + su);
         
      
         su = "[";
@@ -32,7 +34,7 @@ public class UTASTAR_test {
             su += "\n";
         }
         su += "]";
-        System.out.println("\n " + "marginal utility function values: \n" + su);      
+        System.out.println("\n" + "Wartości marginal utility function: \n" + su);
         
         su = "[";
         for(int t = 0; t < test.getReferenceAlternatives().size(); t++)  {
@@ -40,7 +42,7 @@ public class UTASTAR_test {
             su += " " + score;   
         }
         su += "]";
-        System.out.println("\n" + "referenceAlternativesScoring: \n" + su);   
+        System.out.println("\n" + "Oceny alternatyw referencyjnych: \n" + su);   
         
         su = "[";
         for(int t = 0; t < test.getAlternatives().size(); t++)  {
@@ -48,7 +50,7 @@ public class UTASTAR_test {
             su += " " + score;   
         }
         su += "]";
-        System.out.println("\n" + "AlternativesScoring: \n" + su);  
+        System.out.println("\n" + "Oceny alternatyw: \n" + su);  
         
     }   
        
@@ -116,7 +118,19 @@ public class UTASTAR_test {
         
         test.calculate();
         
+      
         String su = "[";
+        for(int i=0; i<test.getCriteriaNum(); i++)   {
+            for(int j=0; j<test.getCriterium(i).getMufArgs().size(); j++)    {
+                su += " " + test.getCriterium(i).getMufArg(j);
+            }
+            su += "\n";
+        }
+        su += "]";
+        System.out.println("\n" + "Argumenty marginal utility function: \n" + su);
+        
+     
+        su = "[";
         for(int i=0; i<test.getCriteriaNum(); i++)   {
             for(int j=0; j<test.getCriterium(i).getMarginalUtilityFunction().size(); j++)    {
                 su += " " + test.getCriterium(i).getMarginalUtilityFunctionValue(j);
@@ -124,9 +138,7 @@ public class UTASTAR_test {
             su += "\n";
         }
         su += "]";
-        System.out.println("\n " + "marginalValueFunctions: \n" + su);
-        
-      
+        System.out.println("\n" + "Wartości marginal utility function: \n" + su);
         
         su = "[";
         for(int t = 0; t < test.getReferenceAlternatives().size(); t++)  {
@@ -134,7 +146,15 @@ public class UTASTAR_test {
             su += " " + score;   
         }
         su += "]";
-        System.out.println("\n" + "referenceAlternativesScoring: \n" + su);        
+        System.out.println("\n" + "Oceny alternatyw referencyjnych: \n" + su);   
+        
+        su = "[";
+        for(int t = 0; t < test.getAlternatives().size(); t++)  {
+            double score = test.getAlternative(t).getScore();
+            su += " " + score;   
+        }
+        su += "]";
+        System.out.println("\n" + "Oceny alternatyw: \n" + su);        
     }   
     
 }

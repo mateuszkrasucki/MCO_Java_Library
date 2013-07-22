@@ -899,7 +899,7 @@ public class UTASTAR {
         if(rank>=this.ranking.size()) {
             throw new IndexOutOfBoundsException("There is no alternative with this index.");
         }
-        return ranking.get(rank);
+        return ranking.get(rank-1);
     }    
     
     /**
@@ -911,7 +911,7 @@ public class UTASTAR {
         if(rank>=this.referenceAlternativesRanking.size()) {
             throw new IndexOutOfBoundsException("There is no alternative with this index.");
         }
-        return this.referenceAlternativesRanking.get(rank);
+        return this.referenceAlternativesRanking.get(rank-1);
     }      
     
     /**

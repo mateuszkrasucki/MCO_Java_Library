@@ -12,7 +12,7 @@ public class MAUT_test {
     
     private static void showGroupCriterium(GroupCriterium groupCriterium)  {
         for(int i=0;i<groupCriterium.getInnerCriteriaCount(); i++)    {
-            System.out.println(groupCriterium.getInnerCriterium(i).getName() + " " + groupCriterium.getInnerCriterium(i).getWeight());
+            System.out.println(groupCriterium.getInnerCriterium(i).getName() + " (zgrupowane w " + groupCriterium.getName() + ") " + groupCriterium.getInnerCriterium(i).getWeight());
             if(groupCriterium.getInnerCriterium(i).isGroup())  {
                 GroupCriterium tmp = (GroupCriterium)groupCriterium.getInnerCriterium(i);
                 showGroupCriterium(tmp);
@@ -21,6 +21,7 @@ public class MAUT_test {
     }
     
     private static void showCriteria(MAUT maut)  {
+        System.out.println("Lista kryteriów wraz z wagami");
         for(int i=0;i<maut.getCriteria().size(); i++)    {
             System.out.println(maut.getCriterium(i).getName() + " " + maut.getCriterium(i).getWeight());
             if(maut.getCriterium(i).isGroup())  {
@@ -31,11 +32,15 @@ public class MAUT_test {
     }
     
     public static void testFromFile()   {
-        MAUT maut_test = new MAUT("/Users/mateuszkrasucki/Desktop/datafiles/maut.csv");
+        System.out.println();
+        System.out.println("TEST AHP");
+        MAUT maut_test = new MAUT("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/maut.csv");
         maut_test.calculate();
         
         showCriteria(maut_test);
         
+        System.out.println();
+        System.out.println("Ranking alternatyw");
         for(int i=0; i<maut_test.getAlternatives().size(); i++)  {
             System.out.println(maut_test.getAlternatives().get(i).getName() + " " + maut_test.getAlternatives().get(i).getScore());
         }
@@ -43,6 +48,9 @@ public class MAUT_test {
     }
     
     public static void test()  {
+        System.out.println();
+        System.out.println("TEST AHP");
+
         MAUT maut_test = new MAUT();
         
         GroupCriterium c1 = new GroupCriterium("c1", 0.5);
@@ -94,7 +102,8 @@ public class MAUT_test {
         maut_test.calculate();
         
         showCriteria(maut_test);
-        
+        System.out.println();
+        System.out.println("Ranking alternatyw");
         for(int i=0; i<maut_test.getAlternatives().size(); i++)  {
             System.out.println(maut_test.getAlternatives().get(i).getName() + " " + maut_test.getAlternatives().get(i).getScore());
         }

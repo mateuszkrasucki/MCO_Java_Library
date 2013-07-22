@@ -404,7 +404,7 @@ public class MAUT {
      * @return Alternative object of alternative with wanted rank.
      */
     public Alternative getAlternativeByRank(int rank)    {
-        return ranking.get(rank);
+        return ranking.get(rank-1);
     }        
     
     /**

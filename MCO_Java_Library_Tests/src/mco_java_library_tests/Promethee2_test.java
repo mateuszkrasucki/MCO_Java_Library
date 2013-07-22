@@ -9,22 +9,23 @@ import methods.Promethee.*;
 public class Promethee2_test {
     
     public static void testFromFile()   {
-        Promethee2 promethee = new Promethee2("/Users/mateuszkrasucki/Desktop/datafiles/promethee.csv");
+        System.out.println();       
+        System.out.println("TEST PROMETHEE2");
+        Promethee2 promethee = new Promethee2("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/promethee.csv");
         promethee.calculate();
         
-         for(int i=0; i<promethee.getRanking().size(); i++)  {
+         for(int i=1; i<promethee.getRanking().size()+1; i++)  {
+            System.out.print(i + ". " + "id: ");
             System.out.print(promethee.getAlternativeByRank(i).getId());
-            System.out.print(". ");
+            System.out.print(". nazwa: ");
             System.out.print(promethee.getAlternativeByRank(i).getName());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternativeByRank(i).getMpfPlus());
-            System.out.print(" ");
-            System.out.print(promethee.getAlternativeByRank(i).getMpfMinus());
-            System.out.print(" ");
+            System.out.print(" MPF: ");
             System.out.println(promethee.getAlternativeByRank(i).getMpf());
         }  
     }
     public static void test()   {
+        System.out.println();       
+        System.out.println("TEST PROMETHEE2");
         Promethee2 promethee = new Promethee2();
         
         Criterium c1 = new Criterium();
@@ -90,15 +91,12 @@ public class Promethee2_test {
         
         promethee.calculate();
         
-         for(int i=0; i<promethee.getRanking().size(); i++)  {
+         for(int i=1; i<promethee.getRanking().size()+1; i++)  {
+            System.out.print(i + ". " + "id: ");
             System.out.print(promethee.getAlternativeByRank(i).getId());
-            System.out.print(". ");
+            System.out.print(". nazwa: ");
             System.out.print(promethee.getAlternativeByRank(i).getName());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternativeByRank(i).getMpfPlus());
-            System.out.print(" ");
-            System.out.print(promethee.getAlternativeByRank(i).getMpfMinus());
-            System.out.print(" ");
+            System.out.print(" MPF: ");
             System.out.println(promethee.getAlternativeByRank(i).getMpf());
         }  
         

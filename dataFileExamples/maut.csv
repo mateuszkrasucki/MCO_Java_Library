@@ -1,0 +1,10 @@
+GroupCriterium,root,c1,0.5
+GroupCriterium,c1,c11,0.7
+NormalCriterium,c11,c111,0.6,LINEAR,1,10
+NormalCriterium,c11,c112,0.8,LINEAR,1,10
+NormalCriterium,c1,c12,0.3,LINEAR,2,4
+NormalCriterium,root,c2,0.5,LINEAR,1,9
+Alternatives,alt1,alt2,alt3
+8.0,9.0,3.0,8.0
+8.0,9.0,3.0,8.0
+8.0,9.0,3.0,8.0

@@ -135,7 +135,7 @@ public abstract class Promethee {
                                             Constraint constraint = new Constraint(criterium, Constraint.ConstrainType.UPPER, Double.parseDouble(values[3]));
                                             this.addConstraint(constraint);
                                         }
-                                        else if(values[2].contentEquals("LOWER"))   {
+                                        else if(values[2].contentEquals("BOTTOM"))   {
                                             Constraint constraint = new Constraint(criterium, Constraint.ConstrainType.BOTTOM, Double.parseDouble(values[3]));
                                             this.addConstraint(constraint);
                                         }
@@ -351,7 +351,7 @@ public abstract class Promethee {
      * @return Alternative object of alternative with wanted rank.
      */
     public Alternative getAlternativeByRank(int rank)    {
-        return ranking.get(rank);
+        return ranking.get(rank-1);
     }        
     
     /**

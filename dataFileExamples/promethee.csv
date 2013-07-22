@@ -1,0 +1,10 @@
+Criterium,c1,0.14285,MIN,GAUSSIAN,0.5
+Criterium,c2,0.14285,MIN,LINEAR,0.05,0.2
+Criterium,c3,0.14285,MAX,LINEAR,0.2
+Criterium,c4,0.5714,MAX,THRESHOLD,0.2
+Constraint,c1,UPPER,65
+Alternatives,Car1,Car2,Car3,Car4
+8.75,6.2,1.0,30.0
+13.75,7.5,1.0,50.0
+25.0,8.0,3.0,80.0
+62.5,20.0,2.0,120.0

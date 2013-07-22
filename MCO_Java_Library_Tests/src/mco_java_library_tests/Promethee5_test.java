@@ -10,29 +10,31 @@ import methods.Promethee.*;
 public class Promethee5_test {
     
     public static void testFromFile()   {
-        Promethee5 promethee = new Promethee5("/Users/mateuszkrasucki/Desktop/datafiles/promethee.csv");
+        System.out.println();       
+        System.out.println("TEST PROMETHEE5");
+        Promethee5 promethee = new Promethee5("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/promethee.csv");
         promethee.calculate();
         
-         for(int i=0; i<promethee.getAlternatives().size(); i++)  {
-            System.out.print(promethee.getAlternative(i).getId());
-            System.out.print(". ");
-            System.out.print(promethee.getAlternative(i).getName());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternative(i).getMpfPlus());
-            System.out.print(" ");
-            System.out.print(promethee.getAlternative(i).getMpfMinus());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternative(i).getMpf());
+         for(int i=1; i<promethee.getRanking().size()+1; i++)  {
+            System.out.print(i + ". " + "id: ");
+            System.out.print(promethee.getAlternativeByRank(i).getId());
+            System.out.print(". nazwa: ");
+            System.out.print(promethee.getAlternativeByRank(i).getName());
+            System.out.print(" MPF: ");
+            System.out.println(promethee.getAlternativeByRank(i).getMpf());
         }       
         
+         System.out.println();
+         System.out.println("Najlepszy zestaw alternatyw biorąc pod uwagę ograniczenia to:");
         for(int i=0; i<promethee.getAlternativesBestSet().size(); i++)   {
             System.out.println(promethee.getAlternativesBestSet().get(i).getName() + " " + promethee.getAlternativesBestSet().get(i).getMpf());
         }
-        System.out.println(promethee.getBestSetMPF());        
+        System.out.println("Sumaryczna wartość MPF tego zestawu to: " + promethee.getBestSetMPF());        
     }
     
     public static void test()   {
-        
+        System.out.println();       
+        System.out.println("TEST PROMETHEE2");
         Promethee5 promethee = new Promethee5();
         
         Criterium c1 = new Criterium();
@@ -100,22 +102,21 @@ public class Promethee5_test {
         promethee.addConstraint(constraint1);
         promethee.calculate();
         
-         for(int i=0; i<promethee.getAlternatives().size(); i++)  {
-            System.out.print(promethee.getAlternative(i).getId());
-            System.out.print(". ");
-            System.out.print(promethee.getAlternative(i).getName());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternative(i).getMpfPlus());
-            System.out.print(" ");
-            System.out.print(promethee.getAlternative(i).getMpfMinus());
-            System.out.print(" ");
-            System.out.println(promethee.getAlternative(i).getMpf());
+         for(int i=1; i<promethee.getRanking().size()+1; i++)  {
+            System.out.print(i + ". " + "id: ");
+            System.out.print(promethee.getAlternativeByRank(i).getId());
+            System.out.print(". nazwa: ");
+            System.out.print(promethee.getAlternativeByRank(i).getName());
+            System.out.print(" MPF: ");
+            System.out.println(promethee.getAlternativeByRank(i).getMpf());
         }       
         
+         System.out.println();
+         System.out.println("Najlepszy zestaw alternatyw biorąc pod uwagę ograniczenia to:");
         for(int i=0; i<promethee.getAlternativesBestSet().size(); i++)   {
             System.out.println(promethee.getAlternativesBestSet().get(i).getName() + " " + promethee.getAlternativesBestSet().get(i).getMpf());
         }
-        System.out.println(promethee.getBestSetMPF());        
+        System.out.println("Sumaryczna wartość MPF tego zestawu to: " + promethee.getBestSetMPF());             
     }
     
 }
