@@ -71,4 +71,19 @@
     nbproject/build-impl.xml file. 
 
     -->
+    
+    <target name="-post-jar">
+        <jar jarfile="dist/MCO_Java_Library_all.jar">
+            <zipfileset src="${dist.jar}" excludes="META-INF/*" />
+            <zipfileset src="libs/commons-math3-3.2-minimum-subset.jar" excludes="META-INF/*" />
+            <zipfileset src="libs/ejml-0.22.jar" excludes="META-INF/*" />
+            <zipfileset src="libs/ojalgo-34.0-without_finance.jar" excludes="META-INF/*" />
+            <zipfileset src="libs/SimplexTable.jar" excludes="META-INF/*" />
+            <manifest>
+                <attribute name="Main-Class" value="com.example.mypackage.Main"/>
+            </manifest>
+        </jar>
+    </target>
 </project>
+
+
