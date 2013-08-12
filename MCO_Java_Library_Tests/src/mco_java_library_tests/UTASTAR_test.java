@@ -10,8 +10,8 @@ public class UTASTAR_test {
     
     public static void testFromFile()   {
         System.out.println();       
-        System.out.println("TEST UTASTAR");
-        UTASTAR test = new UTASTAR("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/utastar.csv");
+        System.out.println(">>>>> TEST UTASTAR, DANE ODCZYTANE Z PLIKU <<<<<");
+        UTASTAR test = new UTASTAR(UTASTAR_test.class.getResource("/datafileExamples/utastar.csv").getPath());
         test.calculate();
         
       
@@ -117,6 +117,9 @@ public class UTASTAR_test {
         test.addReferenceAlternative(alt5);
         
         test.calculate();
+        
+        System.out.println();       
+        System.out.println(">>>>> TEST UTASTAR, DANE ZAWARTE W KODZIE <<<<<");
         
       
         String su = "[";

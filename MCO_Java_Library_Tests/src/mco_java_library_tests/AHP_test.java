@@ -17,8 +17,8 @@ public class AHP_test {
     
     public static void testFromFile()   {
         System.out.println();
-        System.out.println("TEST AHP");
-        AHP ahpTest = new AHP("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/ahp.csv");
+        System.out.println(">>>>> TEST AHP, DANE ODCZYTANE Z PLIKU <<<<<");
+        AHP ahpTest = new AHP(AHP_test.class.getResource("/datafileExamples/ahp.csv").getPath());
         
         ahpTest.calculate();
         
@@ -113,7 +113,7 @@ public class AHP_test {
         ahpTest.addAltsCriteriumValues(reliability, false); 
         ahpTest.addAltsCriteriumValues(fuelEconomy, true);
         System.out.println();
-        System.out.println("TEST AHP");
+        System.out.println(">>>>> TEST AHP, DANE W KODZIE <<<<<");
         ahpTest.calculate();
         
         System.out.println("Waga kryterium 0 " + ahpTest.getCriteriumWeight(0));

@@ -33,8 +33,8 @@ public class MAUT_test {
     
     public static void testFromFile()   {
         System.out.println();
-        System.out.println("TEST AHP");
-        MAUT maut_test = new MAUT("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/maut.csv");
+        System.out.println(">>>>> TEST MAUT, DANE ODCZYTANE Z PLIKU <<<<<");
+        MAUT maut_test = new MAUT(MAUT_test.class.getResource("/datafileExamples/maut.csv").getPath());
         maut_test.calculate();
         
         showCriteria(maut_test);
@@ -49,7 +49,7 @@ public class MAUT_test {
     
     public static void test()  {
         System.out.println();
-        System.out.println("TEST AHP");
+        System.out.println(">>>>> TEST MAUT, DANE ZAWARTE W KODZIE <<<<<");
 
         MAUT maut_test = new MAUT();
         

@@ -10,9 +10,9 @@ public class Promethee1_test {
     
     public static void testFromFile()   {
         System.out.println();       
-        System.out.println("TEST PROMETHEE1");
+        System.out.println(">>>>> TEST PROMETHEE1, DANE ODCZYTANE Z PLIKU <<<<<");
         
-        Promethee1 promethee = new Promethee1("/Users/mateuszkrasucki/Dropbox/MCO/projekt/gitproject/MCO_Java_Library/dataFileExamples/promethee.csv");
+        Promethee1 promethee = new Promethee1(Promethee1_test.class.getResource("/datafileExamples/promethee.csv").getPath());
         promethee.calculate();
         
          for(int i=1; i<promethee.getRanking().size()+1; i++)  {
@@ -50,7 +50,7 @@ public class Promethee1_test {
     }
     public static void test()   {
         System.out.println();       
-        System.out.println("TEST PROMETHEE1");
+        System.out.println(">>>>> TEST PROMETHEE1, DANE ZAWARTE W KODZIE <<<<<");
         
         Promethee1 promethee = new Promethee1();
         
