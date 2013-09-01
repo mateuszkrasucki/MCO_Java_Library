@@ -34,6 +34,8 @@ public class MCO_Java_Library_Tests {
         UTASTAR_test.test();
         System.out.println();
         UTASTAR_test.testFromFile();
+        System.out.println();
+        Electre_test.testFromFile();
     }
 }
 
